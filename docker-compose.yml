@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  bookle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bookle:latest
+    container_name: bookle.docker
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ".:/var/www/html/bookle"
