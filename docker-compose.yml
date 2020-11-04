@@ -1,5 +1,17 @@
 version: "3.7"
 services:
+  bookle-nginx:
+    image: nginx:latest
+    container_name: bookle-nginx.docker
+    ports:
+      - "1212:80"
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - "./dist:/var/www/html/bookle"
+      - "./server.conf:/etc/nginx/conf.d/server.conf"
+    networks:
+      - bookle-network
   bookle:
     build:
       context: .
@@ -10,3 +22,8 @@ services:
       - TZ=America/Sao_Paulo
     volumes:
       - ".:/var/www/html/bookle"
+    networks:
+      - bookle-network
+networks:
+  bookle-network:
+    driver: bridge
