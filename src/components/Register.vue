@@ -9,7 +9,10 @@ export default {
     name: 'Register',
     methods: {
         increment() {
-            this.$store.commit('increment');
+            this.$store.dispatch({
+                type: 'increment',
+                amount: 20
+            });
             console.log(this.$store.state.count);
         }
     }
