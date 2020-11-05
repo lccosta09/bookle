@@ -13,7 +13,7 @@ export default {
                 type: 'increment',
                 amount: 20
             });
-            console.log(this.$store.state.count);
+            console.log(this.$store.state.moduleA.count);
         }
     }
 }
