@@ -1,11 +1,20 @@
 <template>
-    <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png">
-        <div id="nav">
-            <router-link to="/">Hello World</router-link>
-            <router-link to="/register">Registre-se</router-link>
+    <div>
+        <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+            <div class="container">
+                <router-link :to="{ name: 'home' }" class="navbar-brand">Bookle</router-link>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'register' }" class="nav-link">Registre-se</router-link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <router-view />
+        <div class="container">
+            <router-view />
+        </div>
     </div>
 </template>
 
@@ -16,12 +25,4 @@ export default {
 </script>
 
 <style>
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
 </style>
