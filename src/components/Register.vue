@@ -11,12 +11,12 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="bs-component">
-                    <form>
+                    <form v-on:submit="onSubmit">
                         <div class="form-group">
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail">
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail" v-model="email">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha">
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha" v-model="password">
                         </div>
                         <button type="submit" class="btn btn-primary">Registrar</button>
                     </form>
@@ -29,13 +29,24 @@
 <script>
 export default {
     name: 'Register',
+    data() {
+        return {
+            email: '',
+            password: ''
+        }
+    },
     methods: {
-        increment() {
+        onSubmit(event) {
+            event.preventDefault();
+
             this.$store.dispatch({
-                type: 'increment',
-                amount: 20
+                type: 'user/add',
+                user: {
+                    'email': this.email,
+                    'password': this.password 
+                }
             });
-            console.log(this.$store.state.moduleA.count);
+            console.log(this.$store.state.user.user);
         }
     }
 }
