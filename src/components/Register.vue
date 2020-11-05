@@ -7,7 +7,22 @@
                 </div>
             </div>
         </div>
-        <button v-on:click="increment">Incrementar</button>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="bs-component">
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
