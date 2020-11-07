@@ -2,12 +2,12 @@ const user = {
     namespaced: true,
     state() {
         return {
-            users: {}
+            users: []
         }
     },
     mutations: {
         add(state, payload) {
-            state.user = payload.user;
+            state.users = [...state.users, payload.user];
         }
     },
     actions: {

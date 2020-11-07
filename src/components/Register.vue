@@ -46,7 +46,6 @@ export default {
                     'password': this.password 
                 }
             });
-            console.log(this.$store.state.user.user);
         }
     }
 }
