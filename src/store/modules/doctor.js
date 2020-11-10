@@ -4,40 +4,44 @@ const doctors = {
         return {
             doctors: [
                 {
-                    'name': 'Edilaine de Olveira Miguel',
-                    'address': 'Av. Rio Branco',
-                    'number': '1357',
-                    'zipcode': '17526-693',
-                    'neighborhood': 'Alto Cafezal',
-                    'city': 'Marília',
-                    'state': 'SP'
+                    id: 1,
+                    name: 'Edilaine de Olveira Miguel',
+                    address: 'Av. Rio Branco',
+                    number: '1357',
+                    zipcode: '17526-693',
+                    neighborhood: 'Alto Cafezal',
+                    city: 'Marília',
+                    state: 'SP'
                 },
                 {
-                    'name': 'Benedito Pilon',
-                    'address': 'Rua Vinte e um de abril',
-                    'number': '143',
-                    'zipcode': '17516-170',
-                    'neighborhood': 'Jardim Maria Izabel',
-                    'city': 'Marília',
-                    'sate': 'SP'
+                    id: 2,
+                    name: 'Benedito Pilon',
+                    address: 'Rua Vinte e um de abril',
+                    number: '143',
+                    zipcode: '17516-170',
+                    neighborhood: 'Jardim Maria Izabel',
+                    city: 'Marília',
+                    state: 'SP'
                 },
                 {
-                    'name': 'Gisele Nicolielo Soria',
-                    'address': 'Av.Rio Branco',
-                    'number': '1132',
-                    'zipcode': '17502-000',
-                    'neighborhood': 'Alto Cafezal',
-                    'city': 'Marília',
-                    'sate': 'SP'
+                    id: 3,
+                    name: 'Gisele Nicolielo Soria',
+                    address: 'Av.Rio Branco',
+                    number: '1132',
+                    zipcode: '17502-000',
+                    neighborhood: 'Alto Cafezal',
+                    city: 'Marília',
+                    state: 'SP'
                 },
                 {
-                    'name': 'Gisele César de Rossi',
-                    'address': 'Av.Cascata',
-                    'number': '47',
-                    'zipcode': '17515-300',
-                    'neighborhood': 'Jardim Maria Izabel',
-                    'city': 'Marília',
-                    'sate': 'SP'
+                    id: 4,
+                    name: 'Gisele César de Rossi',
+                    address: 'Av.Cascata',
+                    number: '47',
+                    zipcode: '17515-300',
+                    neighborhood: 'Jardim Maria Izabel',
+                    city: 'Marília',
+                    state: 'SP'
                 }
             ]
         }
@@ -54,4 +58,4 @@ const doctors = {
     }
 };
 
-export default user;
+export default doctors;
