@@ -49,12 +49,15 @@ export default {
         position: absolute;
         z-index: 2001;
         top: 0;
-        left: 0;
+        left: 50%;
+        transform: translate(-50%);
     }
 
     @media (min-width: 576px) {
         .modal-dialog {
             width: 500px;
+            left: 50%;
+            transform: translate(-50%);
         }
     }
 </style>
