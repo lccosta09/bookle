@@ -50,14 +50,29 @@ export default {
         z-index: 2001;
         top: 0;
         left: 50%;
-        transform: translate(-50%);
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 90%;
     }
 
     @media (min-width: 576px) {
         .modal-dialog {
             width: 500px;
-            left: 50%;
-            transform: translate(-50%);
+            max-width: 500px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .modal-dialog {
+            width: 650px;
+            max-width: 650px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .modal-dialog {
+            width: 800px;
+            max-width: 800px;
         }
     }
 </style>
