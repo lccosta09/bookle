@@ -2,11 +2,10 @@
     <div class="row">
         <div v-for="doctor in this.$store.state.doctor.doctors" :key="doctor.id" class="col-lg-4">
             <div class="bs-component">
-                <div class="card border-primary mb-3">
-                    <div class="card-header" v-text="doctor.name"></div>
+                <div class="card border-primary mb-3 doctor">
                     <div class="card-body">
-                        <h4 class="card-title">Primary card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h4 class="card-title" v-text="doctor.name"></h4>
+                        <p class="card-text" v-text="doctor.description"></p>
                     </div>
                 </div>
             </div>
@@ -21,4 +20,7 @@ export default {
 </script>
 
 <style scoped>
+    .doctor {
+        min-height: 200px;
+    }
 </style>
