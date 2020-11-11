@@ -51,4 +51,10 @@ export default {
         top: 0;
         left: 0;
     }
+
+    @media (min-width: 576px) {
+        .modal-dialog {
+            width: 500px;
+        }
+    }
 </style>
