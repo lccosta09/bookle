@@ -9,26 +9,8 @@
                             <p class="card-text" v-text="doctor.description"></p>
                         </div>
                         <div class="card-footer d-flex flex-row-reverse">
-                            <button type="button" class="btn btn-primary" v-on:click="this.openDoctorsModal">Ver agenda</button>
+                            <button type="button" class="btn btn-primary" v-on:click="$emit('open-modal')">Ver agenda</button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal show" v-show="isDoctorsModalOpened">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary">Close</button>
                     </div>
                 </div>
             </div>
@@ -38,20 +20,7 @@
 
 <script>
 export default {
-    name: 'Doctors',
-    data() {
-        return {
-            isDoctorsModalOpened: false
-        }
-    },
-    methods: {
-        openDoctorsModal() {
-            this.isDoctorsModalOpened = true;
-        },
-        closeDoctorsModal() {
-            this.isDoctorsModalOpened = false;
-        }
-    }
+    name: 'Doctors'
 }
 </script>
 
@@ -62,9 +31,5 @@ export default {
 
     .show {
         display: block;
-    }
-
-    .hide {
-        display: none;
     }
 </style>
