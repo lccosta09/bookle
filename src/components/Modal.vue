@@ -13,12 +13,12 @@
                         <p>Modal body text goes here.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" v-on:click="this.closeModal">Close</button>
+                        <button type="button" class="btn btn-secondary" v-on:click="$emit('close-modal')">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal-backdrop fade show" v-show="isModalOpen" v-on:click="this.closeModal"></div>
+        <div class="modal-backdrop fade show" v-show="isModalOpen" v-on:click="$emit('close-modal')"></div>
     </div>
 </template>
 
@@ -33,11 +33,6 @@ export default {
     },
     updated() {
         this.isModalOpen = this.isOpen;
-    },
-    methods: {
-        closeModal() {
-            this.isModalOpen = false;
-        }
     }
 }
 </script>

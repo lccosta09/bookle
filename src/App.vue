@@ -4,7 +4,7 @@
         <div class="container">
             <router-view v-on:open-modal="openModal" />
         </div>
-        <Modal :isOpen="isModalOpen" />
+        <Modal :isOpen="isModalOpen" v-on:close-modal="closeModal" />
     </div>
 </template>
 
@@ -26,6 +26,9 @@ export default {
     methods: {
         openModal() {
             this.isModalOpen = true;
+        },
+        closeModal() {
+            this.isModalOpen = false;
         }
     }
 
