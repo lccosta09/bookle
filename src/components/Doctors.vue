@@ -7,6 +7,9 @@
                         <h4 class="card-title" v-text="doctor.name"></h4>
                         <p class="card-text" v-text="doctor.description"></p>
                     </div>
+                    <div class="card-footer d-flex flex-row-reverse">
+                        <button type="button" class="btn btn-primary">Ver agenda</button>
+                    </div>
                 </div>
             </div>
         </div>
