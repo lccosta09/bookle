@@ -3,6 +3,15 @@
         <p>{{ doctor.description }}</p>
         <div class="calendar-wrapper">
             <div class="calendar">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item"><button class="page-link">D</button></li>
+                    <li class="page-item"><button class="page-link">S</button></li>
+                    <li class="page-item"><button class="page-link">T</button></li>
+                    <li class="page-item"><button class="page-link">Q</button></li>
+                    <li class="page-item"><button class="page-link">Q</button></li>
+                    <li class="page-item"><button class="page-link">S</button></li>
+                    <li class="page-item"><button class="page-link">S</button></li>
+                </ul>
                 <ul class="pagination pagination-lg" v-for="(week, x) in month" :key="`week-${x}`">
                     <li class="page-item" v-for="(day, y) in week" :key="`day-${y}`">
                         <button class="page-link">{{ day }}</button>
@@ -44,12 +53,7 @@ export default {
         for (let i = 0; i < 6; i++) {
             let week = [];
             for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < dayOfWeek) {
-                    week = [...week, ''];
-                    continue;
-                }
-
-                if (day > lastDay.getDate()) {
+                if (i === 0 && j < dayOfWeek || day > lastDay.getDate()) {
                     week = [...week, ''];
                     continue;
                 }
