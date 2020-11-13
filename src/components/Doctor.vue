@@ -31,58 +31,31 @@ export default {
     data() {
         return {
             currentYear: 2020,
-            currentMonth: 10,
-            month: [
-                [1, 2, 3, 4, 5, 6, 7],
-                [8, 9, 10, 11, 12, 13, 14],
-                [15, 16, 17, 18, 19, 20, 21],
-                [22, 23, 24, 25, 26, 27, 28],
-                [29, 30, 31]
-            ]
+            currentMonth: 11,
+            month: []
         }
     },
     mounted() {
-        let firstDay = new Date(this.currentYear, this.currentMonth, 1);
-        let lastDay = new Date(this.currentYear, this.currentMonth, 1);
-        lastDay.setMonth(lastDay.getMonth() + 1);
-        lastDay.setDate(lastDay.getDate() - 1);
-        const dayOfWeek = firstDay.getDay();
-        firstDay.setDate(firstDay.getDate() - dayOfWeek);
+        let date = new Date(this.currentYear, this.currentMonth, 1);
+        let lastDate = new Date(this.currentYear, this.currentMonth, 1);
+        lastDate.setMonth(lastDate.getMonth() + 1);
+        lastDate.setDate(lastDate.getDate() - 1);
+        date.setDate(date.getDate() - date.getDay());
         this.month = [];
 
-        let day = 1;
         for (let i = 0; i < 6; i++) {
             let week = [];
             for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < dayOfWeek) {
-                    week = [...week, {
-                        text: firstDay.getDate(),
-                    }];
-
-                    firstDay.setDate(firstDay.getDate() + 1);
-                    continue;
-                }
-
-                if (day > lastDay.getDate()) {
-                    lastDay.setDate(lastDay.getDate() + 1);
-
-                    week = [...week, {
-                        text: lastDay.getDate(),
-                    }];
-                    continue;
-                }
-
-                const date = new Date(this.currentYear, this.currentMonth, day);
-
                 week = [...week, {
                     text: date.getDate()
                 }];
-                day++;
+
+                date.setDate(date.getDate() + 1);
             }
 
             this.month = [...this.month, week];
 
-            if (day > lastDay.getDate()) {
+            if (date.getMonth() > lastDate.getMonth() || date.getYear() > lastDate.getYear()) {
                 break;
             }
         }
