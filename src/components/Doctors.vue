@@ -16,18 +16,20 @@
             </div>
         </div>
         <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="() => this.closeModal()">
-            <p>{{ doctor.name }}</p>
+            <Doctor :doctor="doctor" />
         </Modal>
     </div>
 </template>
 
 <script>
 import Modal from './Modal.vue';
+import Doctor from './Doctor.vue';
 
 export default {
     name: 'Doctors',
     components: {
-        Modal
+        Modal,
+        Doctor
     },
     data() {
         return {
