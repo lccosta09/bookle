@@ -9,19 +9,44 @@
                             <p class="card-text" v-text="doctor.description"></p>
                         </div>
                         <div class="card-footer d-flex flex-row-reverse">
-                            <button type="button" class="btn btn-primary" v-on:click="$emit('open-modal')">Ver agenda</button>
+                            <button type="button" class="btn btn-primary" v-on:click="() => this.openModal(doctor)">Ver agenda</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="() => this.closeModal()">
+            <p>{{ doctor.name }}</p>
+        </Modal>
     </div>
 </template>
 
 <script>
+import Modal from './Modal.vue';
+
 export default {
-    name: 'Doctors'
-}
+    name: 'Doctors',
+    components: {
+        Modal
+    },
+    data() {
+        return {
+            isModalOpen: false,
+            doctor: {
+                name: ''
+            }
+        }
+    },
+    methods: {
+        openModal(doctor) {
+            this.isModalOpen = true;
+            this.doctor = doctor;
+        },
+        closeModal() {
+            this.isModalOpen = false;
+        }
+    }
+};
 </script>
 
 <style scoped>
