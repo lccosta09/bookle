@@ -14,7 +14,7 @@
                 </ul>
                 <ul class="pagination pagination-lg" v-for="(week, x) in month" :key="`week-${x}`">
                     <li class="page-item" v-for="(day, y) in week" :key="`day-${y}`">
-                        <button class="page-link">{{ day }}</button>
+                        <button class="page-link">{{ day.text }}</button>
                     </li>
                 </ul>
             </div>
@@ -30,8 +30,8 @@ export default {
     ],
     data() {
         return {
-            currentYear: 2021,
-            currentMonth: 0,
+            currentYear: 2020,
+            currentMonth: 10,
             month: [
                 [1, 2, 3, 4, 5, 6, 7],
                 [8, 9, 10, 11, 12, 13, 14],
@@ -42,23 +42,41 @@ export default {
         }
     },
     mounted() {
-        const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+        let firstDay = new Date(this.currentYear, this.currentMonth, 1);
         let lastDay = new Date(this.currentYear, this.currentMonth, 1);
         lastDay.setMonth(lastDay.getMonth() + 1);
         lastDay.setDate(lastDay.getDate() - 1);
         const dayOfWeek = firstDay.getDay();
+        firstDay.setDate(firstDay.getDate() - dayOfWeek);
         this.month = [];
 
         let day = 1;
         for (let i = 0; i < 6; i++) {
             let week = [];
             for (let j = 0; j < 7; j++) {
-                if (i === 0 && j < dayOfWeek || day > lastDay.getDate()) {
-                    week = [...week, ''];
+                if (i === 0 && j < dayOfWeek) {
+                    week = [...week, {
+                        text: firstDay.getDate(),
+                    }];
+
+                    firstDay.setDate(firstDay.getDate() + 1);
                     continue;
                 }
 
-                week = [...week, day];
+                if (day > lastDay.getDate()) {
+                    lastDay.setDate(lastDay.getDate() + 1);
+
+                    week = [...week, {
+                        text: lastDay.getDate(),
+                    }];
+                    continue;
+                }
+
+                const date = new Date(this.currentYear, this.currentMonth, day);
+
+                week = [...week, {
+                    text: date.getDate()
+                }];
                 day++;
             }
 
