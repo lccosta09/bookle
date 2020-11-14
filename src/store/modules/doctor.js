@@ -1,4 +1,4 @@
-const doctors = {
+const doctor = {
     namespaced: true,
     state() {
         return {
@@ -62,4 +62,4 @@ const doctors = {
     }
 };
 
-export default doctors;
+export default doctor;
