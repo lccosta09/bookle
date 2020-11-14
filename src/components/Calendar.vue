@@ -17,8 +17,8 @@
                     <li class="page-item"><button class="page-link">S</button></li>
                 </ul>
                 <ul class="pagination pagination-lg" v-for="(week, x) in month" :key="`week-${x}`">
-                    <li class="page-item" v-for="(day, y) in week" :key="`day-${y}`">
-                        <button class="page-link" :class="{'sunday': day.sunday, 'other-month': day.otherMonth, 'today': day.today}" v-on:click="() => this.setDate(day.date)">{{ day.text }}</button>
+                    <li class="page-item" v-for="(date, y) in week" :key="`date-${y}`">
+                        <button class="page-link" :class="{'sunday': date.sunday, 'other-month': date.otherMonth, 'today': date.today}" v-on:click="$emit('choose-date', {'year': date.year, 'month': date.month, 'day': date.day})">{{ date.day }}</button>
                     </li>
                 </ul>
             </div>
@@ -37,12 +37,7 @@ export default {
         const date = new Date();
         return {
             currentYear: date.getFullYear(),
-            currentMonth: date.getMonth(),
-            currentDate: {
-                year: date.getFullYear(),
-                month: date.getMonth(),
-                day: date.getDate()
-            }
+            currentMonth: date.getMonth()
         }
     },
     computed: {
@@ -63,14 +58,11 @@ export default {
                 let week = [];
                 for (let i = 0; i < 7; i++) {
                     week = [...week, {
-                        text: date.getDate(),
+                        year: date.getFullYear(),
+                        month: date.getMonth(),
+                        day: date.getDate(),
                         sunday: date.getDay() === 0,
                         otherMonth: date.getMonth() !== this.currentMonth,
-                        date: {
-                            year: date.getFullYear(),
-                            month: date.getMonth(),
-                            day: date.getDate()
-                        },
                         today: today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getYear() === date.getYear()
                     }];
 
@@ -84,10 +76,6 @@ export default {
         }
     },
     methods: {
-        setDate(date) {
-            this.currentDate = date;
-            this.$emit('choose-date', date);
-        },
         nextMonth() {
             this.incrementMonth(1);
         },
