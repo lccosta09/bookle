@@ -15,8 +15,8 @@
                 </div>
             </div>
         </div>
-        <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="() => this.closeModal()">
-            <Doctor :doctor="doctor" />
+        <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="closeModal">
+            <Doctor :doctor="doctor" :page="modalPage" v-on:set-page = "setModalPage" />
         </Modal>
     </div>
 </template>
@@ -35,8 +35,9 @@ export default {
         return {
             isModalOpen: false,
             doctor: {
-                name: ''
-            }
+                name: '',
+            },
+            modalPage: 'calendar'
         }
     },
     methods: {
@@ -45,7 +46,11 @@ export default {
             this.doctor = doctor;
         },
         closeModal() {
+            this.modalPage = 'calendar';
             this.isModalOpen = false;
+        },
+        setModalPage(page) {
+            this.modalPage = page;
         }
     }
 };

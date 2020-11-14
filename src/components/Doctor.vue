@@ -13,11 +13,11 @@ import Schedules from './Schedules.vue';
 export default {
     name: 'Doctor',
     props: [
-        'doctor'
+        'doctor',
+        'page'
     ],
     data() {
         return {
-            page: '',
             schedule: []
         }
     },
@@ -30,8 +30,6 @@ export default {
             CALENDAR: 'calendar',
             SCHEDULE: 'schedule'
         }
-
-        this.page = this.pages.CALENDAR;
     },
     methods: {
         openSchedule(date) {
@@ -41,7 +39,7 @@ export default {
                 date
             }).then(response => {
                 this.schedule = response;
-                this.page = this.pages.SCHEDULE;
+                this.$emit('set-page', this.pages.SCHEDULE);
             });
         }
     }
