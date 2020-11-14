@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>{{ doctor.description }}</p>
-        <Calendar v-if="step === CALENDAR" v-on:choose-date="showSchedule" />
+        <Calendar v-if="step === steps.CALENDAR" v-on:choose-date="openSchedule" />
     </div>
 </template>
 
@@ -23,23 +23,23 @@ export default {
         Calendar
     },
     created() {
-        this.CALENDAR = 'calendar';
-        this.SCHEDULE = 'schedule';
-        this.step = this.CALENDAR;
+        this.steps = {
+            CALENDAR: 'calendar',
+            SCHEDULE: 'schedule'
+        }
+
+        this.step = this.steps.CALENDAR;
     },
     methods: {
-        showSchedule(date) {
-            // this.step = this.SCHEDULE;
-            this.schedule = this.getSchedule(date);
-        },
-        getSchedule(date) {
-            const schedules = JSON.parse(JSON.stringify(this.$store.state.schedule.schedules));
-
-            const selecteDate = new Date(date.year, date.month, date.day);
-            let [, doctorSchedules] = Object.entries(schedules).find(([doctorId,]) => this.doctor.id === parseInt(doctorId));
-            let [, dateSchedules] = Object.entries(doctorSchedules).find(([timestamp,]) => selecteDate.getTime() === parseInt(timestamp));
-
-            return dateSchedules;
+        openSchedule(date) {
+            this.$store.dispatch({
+                type: 'schedule/getByDoctorAndDate',
+                doctor: this.doctor,
+                date
+            }).then(response => {
+                this.schedule  = response;
+                this.step = this.SCHEDULE;
+            });
         }
     }
 };

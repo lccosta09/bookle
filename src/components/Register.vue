@@ -42,8 +42,8 @@ export default {
             this.$store.dispatch({
                 type: 'user/add',
                 user: {
-                    'email': this.email,
-                    'password': this.password 
+                    email: this.email,
+                    password: this.password
                 }
             });
         }
