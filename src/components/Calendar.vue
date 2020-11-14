@@ -2,6 +2,11 @@
     <div>
         <div class="calendar-wrapper">
             <div class="calendar">
+                <div class="btn-toolbar">
+                    <button type="button" class="btn btn-secondary prev" v-on:click="() => prevMonth()">&lt;</button>
+                    <div class="month">{{ monthName }} {{ currentYear }}</div>
+                    <button type="button" class="btn btn-secondary next" v-on:click="() => nextMonth()">&gt;</button>
+                </div>
                 <ul class="pagination pagination-lg weekdays">
                     <li class="page-item"><button class="page-link">D</button></li>
                     <li class="page-item"><button class="page-link">S</button></li>
@@ -29,12 +34,17 @@ export default {
         'doctor'
     ],
     data() {
+        const date = new Date();
         return {
-            currentYear: 2020,
-            currentMonth: 10
+            currentYear: date.getFullYear(),
+            currentMonth: date.getMonth()
         }
     },
     computed: {
+        monthName() {
+            const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            return months[this.currentMonth];
+        },
         month() {
             const monthDates = this.getMonth();
             let month = [];
@@ -74,6 +84,18 @@ export default {
             } while (date.getMonth() <= lastDate.getMonth() && date.getYear() <= lastDate.getYear());
 
             return month;
+        },
+        nextMonth() {
+            const date = new Date(this.currentYear, this.currentMonth, 1);
+            date.setMonth(date.getMonth() + 1);
+            this.currentYear = date.getFullYear();
+            this.currentMonth = date.getMonth();
+        },
+        prevMonth() {
+            const date = new Date(this.currentYear, this.currentMonth, 1);
+            date.setMonth(date.getMonth() - 1);
+            this.currentYear = date.getFullYear();
+            this.currentMonth = date.getMonth();
         }
     }
 };
@@ -87,6 +109,38 @@ export default {
     .calendar {
         text-align: left;
         display: inline-block;
+    }
+
+    .btn-toolbar {
+        margin-bottom: 5px;
+        position: relative;
+        height: 30px;
+    }
+
+    .btn-toolbar .btn {
+        position: absolute;
+        padding: 0;
+        height: 30px;
+        width: 30px;
+        z-index: 220;
+    }
+
+    .btn-toolbar .prev {
+        left: 30px;
+    }
+
+    .btn-toolbar .next {
+        right: 30px;
+    }
+
+    .btn-toolbar .month {
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        z-index: 200;
+        font-weight: bold;
     }
 
     .pagination-lg .page-link {
@@ -104,6 +158,10 @@ export default {
 
     .weekdays .page-link {
         font-weight: bold;
+    }
+
+    .weekdays .page-link:hover {
+        background: none;
     }
 
     .page-link.sunday {
