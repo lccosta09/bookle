@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         dateChosen(date) {
-
+            console.log(date);
         }
     }
 };
