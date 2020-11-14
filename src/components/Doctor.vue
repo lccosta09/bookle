@@ -1,12 +1,14 @@
 <template>
     <div>
         <p>{{ doctor.description }}</p>
-        <Calendar v-if="step === steps.CALENDAR" v-on:choose-date="openSchedule" />
+        <Calendar v-if="page === pages.CALENDAR" v-on:choose-date="openSchedule" />
+        <Schedules v-if="page === pages.SCHEDULE" :schedules="schedules" />
     </div>
 </template>
 
 <script>
 import Calendar from './Calendar.vue';
+import Schedules from './Schedules.vue';
 
 export default {
     name: 'Doctor',
@@ -15,20 +17,21 @@ export default {
     ],
     data() {
         return {
-            step: '',
+            page: '',
             schedule: []
         }
     },
     components: {
-        Calendar
+        Calendar,
+        Schedules
     },
     created() {
-        this.steps = {
+        this.pages = {
             CALENDAR: 'calendar',
             SCHEDULE: 'schedule'
         }
 
-        this.step = this.steps.CALENDAR;
+        this.page = this.pages.CALENDAR;
     },
     methods: {
         openSchedule(date) {
@@ -37,8 +40,8 @@ export default {
                 doctor: this.doctor,
                 date
             }).then(response => {
-                this.schedule  = response;
-                this.step = this.SCHEDULE;
+                this.schedule = response;
+                this.page = this.pages.SCHEDULE;
             });
         }
     }
