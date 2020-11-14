@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>{{ doctor.description }}</p>
-        <Calendar />
+        <Calendar v-on:choose-date="dateChosen" />
     </div>
 </template>
 
@@ -15,6 +15,11 @@ export default {
     ],
     components: {
         Calendar
+    },
+    methods: {
+        dateChosen(date) {
+
+        }
     }
 };
 </script>

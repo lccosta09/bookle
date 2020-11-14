@@ -18,7 +18,7 @@
                 </ul>
                 <ul class="pagination pagination-lg" v-for="(week, x) in month" :key="`week-${x}`">
                     <li class="page-item" v-for="(day, y) in week" :key="`day-${y}`">
-                        <button class="page-link" :class="{'sunday': day.sunday, 'other-month': day.otherMonth}" v-on:click="() => this.selectDate(day.x, day.y)">{{ day.text }}</button>
+                        <button class="page-link" :class="{'sunday': day.sunday, 'other-month': day.otherMonth, 'today': day.today}" v-on:click="() => this.setDate(day.date)">{{ day.text }}</button>
                     </li>
                 </ul>
             </div>
@@ -37,7 +37,12 @@ export default {
         const date = new Date();
         return {
             currentYear: date.getFullYear(),
-            currentMonth: date.getMonth()
+            currentMonth: date.getMonth(),
+            currentDate: {
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                day: date.getDate()
+            }
         }
     },
     computed: {
@@ -51,12 +56,18 @@ export default {
             monthDates.forEach((week, x) => {
                 month[x] = [];
                 week.forEach((date, y) => {
+                    const today = new Date();
+
                     month[x][y] = {
                         text: date.getDate(),
                         sunday: date.getDay() === 0,
                         otherMonth: date.getMonth() !== this.currentMonth,
-                        x,
-                        y
+                        date: {
+                            year: date.getFullYear(),
+                            month: date.getMonth(),
+                            day: date.getDate()
+                        },
+                        today: today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getYear() === date.getYear()
                     }
                 });
             });
@@ -84,6 +95,10 @@ export default {
             } while (date.getMonth() <= lastDate.getMonth() && date.getYear() <= lastDate.getYear());
 
             return month;
+        },
+        setDate(date) {
+            this.currentDate = date;
+            this.$emit('choose-date', date);
         },
         nextMonth() {
             const date = new Date(this.currentYear, this.currentMonth, 1);
@@ -166,6 +181,11 @@ export default {
 
     .page-link.sunday {
         font-weight: bold;
+    }
+
+    .today {
+        font-weight: bold;
+        color: red !important;
     }
 
     .page-link.other-month {
