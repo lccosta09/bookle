@@ -2,7 +2,7 @@
     <div>
         <p>{{ doctor.description }}</p>
         <Calendar v-if="page === pages.CALENDAR" v-on:choose-date="openSchedule" />
-        <Schedules v-if="page === pages.SCHEDULE" :schedules="schedules" />
+        <Schedules v-if="page === pages.SCHEDULE" :schedule="schedule" />
     </div>
 </template>
 
