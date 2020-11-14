@@ -63,19 +63,15 @@ export default {
             lastDate.setDate(lastDate.getDate() - 1);
             date.setDate(date.getDate() - date.getDay());
 
-            for (let x = 0; x < 6; x++) {
+            do {
                 let week = [];
-                for (let y = 0; y < 7; y++) {
+                for (let i = 0; i < 7; i++) {
                     week = [...week, new Date(date.getTime())];
                     date.setDate(date.getDate() + 1);
                 }
 
                 month = [...month, week];
-
-                if (date.getMonth() > lastDate.getMonth() || date.getYear() > lastDate.getYear()) {
-                    break;
-                }
-            }
+            } while (date.getMonth() <= lastDate.getMonth() && date.getYear() <= lastDate.getYear());
 
             return month;
         }
