@@ -2,7 +2,7 @@
     <div>
         <div class="calendar-wrapper">
             <div class="calendar">
-                <ul class="pagination pagination-lg">
+                <ul class="pagination pagination-lg weekdays">
                     <li class="page-item"><button class="page-link">D</button></li>
                     <li class="page-item"><button class="page-link">S</button></li>
                     <li class="page-item"><button class="page-link">T</button></li>
@@ -13,7 +13,7 @@
                 </ul>
                 <ul class="pagination pagination-lg" v-for="(week, x) in month" :key="`week-${x}`">
                     <li class="page-item" v-for="(day, y) in week" :key="`day-${y}`">
-                        <button class="page-link" v-on:click="() => this.selectDate(day.x, day.y)">{{ day.text }}</button>
+                        <button class="page-link" :class="{'sunday': day.sunday, 'other-month': day.otherMonth}" v-on:click="() => this.selectDate(day.x, day.y)">{{ day.text }}</button>
                     </li>
                 </ul>
             </div>
@@ -43,6 +43,8 @@ export default {
                 week.forEach((date, y) => {
                     month[x][y] = {
                         text: date.getDate(),
+                        sunday: date.getDay() === 0,
+                        otherMonth: date.getMonth() !== this.currentMonth,
                         x,
                         y
                     }
@@ -97,9 +99,22 @@ export default {
         height: 50px;
         border: none;
         border-radius: 0;
+        color: #444;
     }
 
     .pagination-lg {
         margin: 0;
+    }
+
+    .weekdays .page-link {
+        font-weight: bold;
+    }
+
+    .page-link.sunday {
+        font-weight: bold;
+    }
+
+    .page-link.other-month {
+        color: #afadad;
     }
 </style>
