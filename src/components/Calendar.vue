@@ -51,14 +51,18 @@ export default {
             return months[this.currentMonth];
         },
         month() {
-            const monthDates = this.getMonth();
+            const today = new Date();
+            let date = new Date(this.currentYear, this.currentMonth, 1);
+            let lastDate = new Date(this.currentYear, this.currentMonth, 1);
+            lastDate.setMonth(lastDate.getMonth() + 1);
+            lastDate.setDate(lastDate.getDate() - 1);
+            date.setDate(date.getDate() - date.getDay());
             let month = [];
-            monthDates.forEach((week, x) => {
-                month[x] = [];
-                week.forEach((date, y) => {
-                    const today = new Date();
 
-                    month[x][y] = {
+            do {
+                let week = [];
+                for (let i = 0; i < 7; i++) {
+                    week = [...week, {
                         text: date.getDate(),
                         sunday: date.getDay() === 0,
                         otherMonth: date.getMonth() !== this.currentMonth,
@@ -68,26 +72,8 @@ export default {
                             day: date.getDate()
                         },
                         today: today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getYear() === date.getYear()
-                    }
-                });
-            });
+                    }];
 
-            return month;
-        }
-    },
-    methods: {
-        getMonth() {
-            let month = []; 
-            let date = new Date(this.currentYear, this.currentMonth, 1);
-            let lastDate = new Date(this.currentYear, this.currentMonth, 1);
-            lastDate.setMonth(lastDate.getMonth() + 1);
-            lastDate.setDate(lastDate.getDate() - 1);
-            date.setDate(date.getDate() - date.getDay());
-
-            do {
-                let week = [];
-                for (let i = 0; i < 7; i++) {
-                    week = [...week, new Date(date.getTime())];
                     date.setDate(date.getDate() + 1);
                 }
 
@@ -95,20 +81,22 @@ export default {
             } while (date.getMonth() <= lastDate.getMonth() && date.getYear() <= lastDate.getYear());
 
             return month;
-        },
+        }
+    },
+    methods: {
         setDate(date) {
             this.currentDate = date;
             this.$emit('choose-date', date);
         },
         nextMonth() {
-            const date = new Date(this.currentYear, this.currentMonth, 1);
-            date.setMonth(date.getMonth() + 1);
-            this.currentYear = date.getFullYear();
-            this.currentMonth = date.getMonth();
+            this.incrementMonth(1);
         },
         prevMonth() {
+            this.incrementMonth(-1);
+        },
+        incrementMonth(increment) {
             const date = new Date(this.currentYear, this.currentMonth, 1);
-            date.setMonth(date.getMonth() - 1);
+            date.setMonth(date.getMonth() + increment);
             this.currentYear = date.getFullYear();
             this.currentMonth = date.getMonth();
         }
