@@ -15,8 +15,14 @@
                 </div>
             </div>
         </div>
-        <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="closeModal">
-            <Doctor :doctor="doctor" :page="modalPage" v-on:set-page = "setModalPage" />
+        <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="onCloseModal">
+            <Doctor
+                :doctor="doctor"
+                :page="modalPage"
+                :currentYear="currentYear"
+                :currentMonth="currentMonth"
+                v-on:set-page="onSetModalPage"
+                v-on:set-month="onSetMonth" />
         </Modal>
     </div>
 </template>
@@ -32,12 +38,16 @@ export default {
         Doctor
     },
     data() {
+        const date = new Date();
+
         return {
             isModalOpen: false,
             doctor: {
                 name: '',
             },
-            modalPage: 'calendar'
+            modalPage: 'calendar',
+            currentYear: date.getFullYear(),
+            currentMonth: date.getMonth()
         }
     },
     methods: {
@@ -45,12 +55,20 @@ export default {
             this.isModalOpen = true;
             this.doctor = doctor;
         },
-        closeModal() {
-            this.modalPage = 'calendar';
+        onCloseModal() {
+            const date = new Date();
+
             this.isModalOpen = false;
+            this.modalPage = 'calendar';
+            this.currentYear = date.getFullYear();
+            this.currentMonth = date.getMonth();
         },
-        setModalPage(page) {
+        onSetModalPage(page) {
             this.modalPage = page;
+        },
+        onSetMonth(data) {
+            this.currentYear = data.year;
+            this.currentMonth = data.month;
         }
     }
 };

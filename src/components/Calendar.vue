@@ -30,14 +30,19 @@
 
 export default {
     name: 'Doctor',
-    props: [
-        'doctor'
-    ],
-    data() {
-        const date = new Date();
-        return {
-            currentYear: date.getFullYear(),
-            currentMonth: date.getMonth()
+    props: {
+        'doctor': {},
+        'currentYear': {
+            default: () => {
+                const date = new Date();
+                return date.getFullYear();
+            }
+        },
+        'currentMonth': {
+            default: () => {
+                const date = new Date();
+                return date.getMonth();
+            }
         }
     },
     computed: {
@@ -85,8 +90,7 @@ export default {
         incrementMonth(increment) {
             const date = new Date(this.currentYear, this.currentMonth, 1);
             date.setMonth(date.getMonth() + increment);
-            this.currentYear = date.getFullYear();
-            this.currentMonth = date.getMonth();
+            this.$emit('set-month', {year: date.getFullYear(), month: date.getMonth()});
         }
     }
 };
