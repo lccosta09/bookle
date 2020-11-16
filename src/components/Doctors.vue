@@ -19,10 +19,9 @@
             <Doctor
                 :doctor="doctor"
                 :page="modalPage"
-                :currentYear="currentYear"
-                :currentMonth="currentMonth"
+                :date="date"
                 v-on:set-page="onSetModalPage"
-                v-on:set-month="onSetMonth" />
+                v-on:set-date="onSetDate" />
         </Modal>
     </div>
 </template>
@@ -46,8 +45,11 @@ export default {
                 name: '',
             },
             modalPage: 'calendar',
-            currentYear: date.getFullYear(),
-            currentMonth: date.getMonth()
+            date: {
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                day: date.getDate()
+            }
         }
     },
     methods: {
@@ -60,15 +62,17 @@ export default {
 
             this.isModalOpen = false;
             this.modalPage = 'calendar';
-            this.currentYear = date.getFullYear();
-            this.currentMonth = date.getMonth();
+            this.date = {
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                day: date.getDate()
+            };
         },
         onSetModalPage(page) {
             this.modalPage = page;
         },
-        onSetMonth(data) {
-            this.currentYear = data.year;
-            this.currentMonth = data.month;
+        onSetDate(date) {
+            this.date = date;
         }
     }
 };

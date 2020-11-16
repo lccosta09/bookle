@@ -4,7 +4,7 @@
             <div class="calendar">
                 <div class="btn-toolbar">
                     <button type="button" class="btn btn-secondary prev" v-on:click="() => prevMonth()">&lt;</button>
-                    <div class="month">{{ monthName }} {{ currentYear }}</div>
+                    <div class="month">{{ monthName }} {{ date.year }}</div>
                     <button type="button" class="btn btn-secondary next" v-on:click="() => nextMonth()">&gt;</button>
                 </div>
                 <ul class="pagination pagination-lg weekdays">
@@ -32,28 +32,26 @@ export default {
     name: 'Doctor',
     props: {
         'doctor': {},
-        'currentYear': {
+        'date': {
             default: () => {
                 const date = new Date();
-                return date.getFullYear();
-            }
-        },
-        'currentMonth': {
-            default: () => {
-                const date = new Date();
-                return date.getMonth();
+                return {
+                    year: date.getFullYear(),
+                    month: date.getMonth(),
+                    day: date.getDate()
+                };
             }
         }
     },
     computed: {
         monthName() {
             const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            return months[this.currentMonth];
+            return months[this.date.month];
         },
         month() {
             const today = new Date();
-            let date = new Date(this.currentYear, this.currentMonth, 1);
-            let lastDate = new Date(this.currentYear, this.currentMonth, 1);
+            let date = new Date(this.date.year, this.date.month, 1);
+            let lastDate = new Date(this.date.year, this.date.month, 1);
             lastDate.setMonth(lastDate.getMonth() + 1);
             lastDate.setDate(lastDate.getDate() - 1);
             date.setDate(date.getDate() - date.getDay());
@@ -67,7 +65,7 @@ export default {
                         month: date.getMonth(),
                         day: date.getDate(),
                         sunday: date.getDay() === 0,
-                        otherMonth: date.getMonth() !== this.currentMonth,
+                        otherMonth: date.getMonth() !== this.date.month,
                         today: today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getYear() === date.getYear()
                     }];
 
@@ -88,9 +86,13 @@ export default {
             this.incrementMonth(-1);
         },
         incrementMonth(increment) {
-            const date = new Date(this.currentYear, this.currentMonth, 1);
+            const date = new Date(this.date.year, this.date.month, 1);
             date.setMonth(date.getMonth() + increment);
-            this.$emit('set-month', {year: date.getFullYear(), month: date.getMonth()});
+            this.$emit('set-date', {
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                day: date.getDate()
+            });
         }
     }
 };

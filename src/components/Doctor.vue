@@ -3,11 +3,12 @@
         <p>{{ doctor.description }}</p>
         <Calendar
             v-if="page === pages.CALENDAR"
-            :currentYear="currentYear"
-            :currentMonth="currentMonth"
-            v-on:set-month="onSetMonth"
+            :date="date"
+            v-on:set-date="onSetDate"
             v-on:choose-date="onOpenSchedule" />
-        <Schedules v-if="page === pages.SCHEDULE" :schedule="schedule" />
+        <Schedules
+            v-if="page === pages.SCHEDULE"
+            :schedule="schedule" />
     </div>
 </template>
 
@@ -20,8 +21,7 @@ export default {
     props: [
         'doctor',
         'page',
-        'currentYear',
-        'currentMonth'
+        'date'
     ],
     data() {
         return {
@@ -39,8 +39,8 @@ export default {
         }
     },
     methods: {
-        onSetMonth(data) {
-            this.$emit('set-month', data);
+        onSetDate(date) {
+            this.$emit('set-date', date);
         },
         onOpenSchedule(date) {
             this.$store.dispatch({
