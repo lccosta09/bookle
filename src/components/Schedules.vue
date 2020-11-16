@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5></h5>
+        <h5>{{ fullDate }}</h5>
         <div v-for="(inteval, index) in schedule" :key="`inteval-${index}`">
             <div>{{ inteval.start }}</div>
         </div>
@@ -12,7 +12,15 @@
 export default {
     name: 'Schedules',
     props: [
+        'date',
         'schedule'
     ],
+    computed: {
+        fullDate() {
+            const date = new Date(this.date.year, this.date.month, this.date.day);
+            const weekdays = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+            return weekdays[date.getDay()];
+        }
+    }
 };
 </script>

@@ -8,6 +8,7 @@
             v-on:choose-date="onOpenSchedule" />
         <Schedules
             v-if="page === pages.SCHEDULE"
+            :date="date"
             :schedule="schedule" />
     </div>
 </template>
@@ -43,11 +44,17 @@ export default {
             this.$emit('set-date', date);
         },
         onOpenSchedule(date) {
+            this.onSetDate(date);
+
             this.$store.dispatch({
                 type: 'schedule/getByDoctorAndDate',
                 doctor: this.doctor,
                 date
             }).then(response => {
+                if (!response.length) {
+                    return;
+                }
+
                 this.schedule = response;
                 this.$emit('set-page', this.pages.SCHEDULE);
             });
