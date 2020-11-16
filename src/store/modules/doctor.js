@@ -12,7 +12,7 @@ const doctor = {
                     neighborhood: 'Alto Cafezal',
                     city: 'Marília',
                     state: 'SP',
-                    description: 'Clínico geral com mais de 10 anos de esperiência.'
+                    description: 'Clínico geral com mais de 10 anos de experiência.'
                 },
                 {
                     id: 2,
@@ -23,7 +23,7 @@ const doctor = {
                     neighborhood: 'Jardim Maria Izabel',
                     city: 'Marília',
                     state: 'SP',
-                    description: 'Cirurgião geral, gastroenterologista e coloproctologista com mais de 30 anos de esperiência'
+                    description: 'Cirurgião geral, gastroenterologista e coloproctologista com mais de 30 anos de experiência'
                 },
                 {
                     id: 3,
