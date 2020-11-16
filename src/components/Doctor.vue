@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p>{{ doctor.description }}</p>
         <Calendar
             v-if="page === pages.CALENDAR"
             :date="date"
