@@ -21,7 +21,8 @@
                 :page="modalPage"
                 :date="date"
                 v-on:set-page="onSetModalPage"
-                v-on:set-date="onSetDate" />
+                v-on:set-date="onSetDate"
+                v-on:previous-page="onPreviosPage" />
         </Modal>
     </div>
 </template>
@@ -52,6 +53,12 @@ export default {
             }
         }
     },
+    created() {
+        this.pages = {
+            CALENDAR: 'calendar',
+            SCHEDULE: 'schedule'
+        }
+    },
     methods: {
         openModal(doctor) {
             this.isModalOpen = true;
@@ -73,6 +80,13 @@ export default {
         },
         onSetDate(date) {
             this.date = date;
+        },
+        onPreviosPage(page) {
+            const pages = {
+                [this.pages.SCHEDULE]: this.pages.CALENDAR
+            }
+
+            this.modalPage = pages[page];
         }
     }
 };

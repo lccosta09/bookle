@@ -8,7 +8,8 @@
         <Schedules
             v-if="page === pages.SCHEDULE"
             :date="date"
-            :schedule="schedule" />
+            :schedule="schedule"
+            v-on:previous-page="$emit('previous-page', page)" />
     </div>
 </template>
 
