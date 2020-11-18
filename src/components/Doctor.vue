@@ -18,12 +18,18 @@
             :date="date"
             :schedule="dateSchedule"
             v-on:book="$emit('book', $event)" />
+        <BookedMessage
+            v-if="page === pages.BOOKED_MESSAGE"
+            :date="date"
+            :doctor="doctor"
+            :interval="bookedInterval" />
     </div>
 </template>
 
 <script>
 import Calendar from './Calendar.vue';
 import Schedules from './Schedules.vue';
+import BookedMessage from './BookedMessage.vue';
 
 export default {
     name: 'Doctor',
@@ -32,11 +38,13 @@ export default {
         'pages',
         'page',
         'date',
-        'dateSchedule'
+        'dateSchedule',
+        'bookedInterval'
     ],
     components: {
         Calendar,
-        Schedules
+        Schedules,
+        BookedMessage
     }
 };
 </script>

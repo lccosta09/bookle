@@ -22,6 +22,7 @@
                 :page="modalPage"
                 :date="date"
                 :dateSchedule="doctorDateSchedule"
+                :bookedInterval="bookedInterval"
                 v-on:open-schedule="onOpenSchedule"
                 v-on:book="onBook"
                 v-on:set-date="onSetDate"
@@ -44,7 +45,8 @@ export default {
         const date = new Date();
         const modalPages = {
             CALENDAR: 'calendar',
-            SCHEDULE: 'schedule'
+            SCHEDULE: 'schedule',
+            BOOKED_MESSAGE: 'booked-message'
         };
 
         return {
@@ -59,7 +61,11 @@ export default {
                 month: date.getMonth(),
                 day: date.getDate()
             },
-            doctorDateSchedule: []
+            doctorDateSchedule: [],
+            bookedInterval: {
+                start: '',
+                end: ''
+            }
         }
     },
     methods: {
@@ -83,7 +89,8 @@ export default {
         },
         onPreviosPage(page) {
             const pages = {
-                [this.modalPages.SCHEDULE]: this.modalPages.CALENDAR
+                [this.modalPages.SCHEDULE]: this.modalPages.CALENDAR,
+                [this.modalPages.BOOKED_MESSAGE]: this.modalPages.CALENDAR
             }
 
             this.modalPage = pages[page];
@@ -133,6 +140,8 @@ export default {
 
             if (added) {
                 this.doctorDateSchedule = await this.getDoctorDateSchedule(this.date);
+                this.bookedInterval = interval;
+                this.modalPage = this.modalPages.BOOKED_MESSAGE;
             }
         }
     }
