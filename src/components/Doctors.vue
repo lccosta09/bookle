@@ -78,9 +78,6 @@ export default {
                 day: date.getDate()
             };
         },
-        onSetModalPage(page) {
-            this.modalPage = page;
-        },
         onSetDate(date) {
             this.date = date;
         },
@@ -97,7 +94,7 @@ export default {
             const doctorDateSchedule = await this.getDoctorDateSchedule(date);
             if (doctorDateSchedule.length) {
                 this.doctorDateSchedule = doctorDateSchedule;
-                this.onSetModalPage(this.modalPages.SCHEDULE);
+                this.modalPage = this.modalPages.SCHEDULE;
             }
         },
         async getDoctorDateSchedule(date) {
