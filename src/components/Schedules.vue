@@ -37,6 +37,7 @@ export default {
         text-align: center;
         font-weight: normal;
         font-size: 1.015625rem;
+        margin-bottom: 15px;
     }
 
     .intervals {
