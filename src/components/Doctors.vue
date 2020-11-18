@@ -61,6 +61,7 @@ export default {
                 month: date.getMonth(),
                 day: date.getDate()
             },
+            doctorMonthSchedule: {},
             doctorDateSchedule: [],
             bookedInterval: {
                 start: '',
@@ -72,19 +73,24 @@ export default {
         openModal(doctor) {
             this.isModalOpen = true;
             this.doctor = doctor;
-        },
-        onCloseModal() {
             const date = new Date();
 
-            this.isModalOpen = false;
-            this.modalPage = 'calendar';
-            this.date = {
+            this.onSetDate({
                 year: date.getFullYear(),
                 month: date.getMonth(),
                 day: date.getDate()
-            };
+            });
+
+            this.modalPage = 'calendar';
+        },
+        onCloseModal() {
+            this.isModalOpen = false;
         },
         onSetDate(date) {
+            if (this.date.year !== date.year && this.date.month !== date.month) {
+                this.doctorMonthSchedule = this.getDoctorMonthSchedule(date);
+            }
+
             this.date = date;
         },
         onPreviosPage(page) {
@@ -103,6 +109,9 @@ export default {
                 this.doctorDateSchedule = doctorDateSchedule;
                 this.modalPage = this.modalPages.SCHEDULE;
             }
+        },
+        async getDoctorMonthSchedule(date) {
+            return {'oi': date};
         },
         async getDoctorDateSchedule(date) {
             const schedule = await this.$store.dispatch({
