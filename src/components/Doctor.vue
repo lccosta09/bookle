@@ -43,21 +43,20 @@ export default {
         onSetDate(date) {
             this.$emit('set-date', date);
         },
-        onOpenSchedule(date) {
+        async onOpenSchedule(date) {
             this.onSetDate(date);
 
-            this.$store.dispatch({
+            this.schedule = await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndDate',
                 doctor: this.doctor,
                 date
-            }).then(response => {
-                if (!response.length) {
-                    return;
-                }
-
-                this.schedule = response;
-                this.$emit('set-page', this.pages.SCHEDULE);
             });
+
+            if (!this.schedule.length) {
+                return;
+            }
+
+            this.$emit('set-page', this.pages.SCHEDULE);
         }
     }
 };
