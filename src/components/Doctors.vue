@@ -20,7 +20,9 @@
                 :doctor="doctor"
                 :page="modalPage"
                 :date="date"
-                v-on:set-page="onSetModalPage"
+                :dateSchedule="doctorDateSchedule"
+                v-on:open-schedule="onOpenSchedule"
+                v-on:book="onBook"
                 v-on:set-date="onSetDate"
                 v-on:previous-page="onPreviosPage" />
         </Modal>
@@ -50,7 +52,8 @@ export default {
                 year: date.getFullYear(),
                 month: date.getMonth(),
                 day: date.getDate()
-            }
+            },
+            doctorDateSchedule: []
         }
     },
     created() {
@@ -87,6 +90,53 @@ export default {
             }
 
             this.modalPage = pages[page];
+        },
+        async onOpenSchedule(date) {
+            this.onSetDate(date);
+
+            const doctorDateSchedule = await this.getDoctorDateSchedule(date);
+            if (doctorDateSchedule.length) {
+                this.doctorDateSchedule = doctorDateSchedule;
+                this.onSetModalPage(this.pages.SCHEDULE);
+            }
+        },
+        async getDoctorDateSchedule(date) {
+            const schedule = await this.$store.dispatch({
+                type: 'schedule/getByDoctorAndDate',
+                doctor: this.doctor,
+                date
+            });
+
+            const appointments = await this.$store.dispatch({
+                type: 'appointment/getByDoctorAndDate',
+                doctor: this.doctor,
+                date
+            });
+
+            let doctorSchedule = schedule.filter((scheduleInterval) => {
+                const scheduleAppointments = appointments.filter((appointmentInterval) => {
+                    return scheduleInterval.start === appointmentInterval.start && scheduleInterval.end === appointmentInterval.end;
+                });
+
+                return scheduleAppointments.length < scheduleInterval.appointmentsLimit;
+            });
+
+            return doctorSchedule;
+        },
+        async onBook(interval) {
+            const added = await this.$store.dispatch({
+                type: 'appointment/add',
+                doctor: this.doctor,
+                date: this.date,
+                interval: {
+                    start: interval.start,
+                    end: interval.end
+                }
+            });
+
+            if (added) {
+                this.doctorDateSchedule = await this.getDoctorDateSchedule(this.date);
+            }
         }
     }
 };
