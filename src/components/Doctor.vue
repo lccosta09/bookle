@@ -22,6 +22,7 @@ export default {
     name: 'Doctor',
     props: [
         'doctor',
+        'pages',
         'page',
         'date',
         'dateSchedule'
@@ -29,12 +30,6 @@ export default {
     components: {
         Calendar,
         Schedules
-    },
-    created() {
-        this.pages = {
-            CALENDAR: 'calendar',
-            SCHEDULE: 'schedule'
-        }
     },
     methods: {
         onSetDate(date) {

@@ -18,6 +18,7 @@
         <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="onCloseModal">
             <Doctor
                 :doctor="doctor"
+                :pages="modalPages"
                 :page="modalPage"
                 :date="date"
                 :dateSchedule="doctorDateSchedule"
@@ -41,25 +42,24 @@ export default {
     },
     data() {
         const date = new Date();
+        const modalPages = {
+            CALENDAR: 'calendar',
+            SCHEDULE: 'schedule'
+        };
 
         return {
             isModalOpen: false,
             doctor: {
                 name: '',
             },
-            modalPage: 'calendar',
+            modalPages,
+            modalPage: modalPages.CALENDAR,
             date: {
                 year: date.getFullYear(),
                 month: date.getMonth(),
                 day: date.getDate()
             },
             doctorDateSchedule: []
-        }
-    },
-    created() {
-        this.pages = {
-            CALENDAR: 'calendar',
-            SCHEDULE: 'schedule'
         }
     },
     methods: {
@@ -86,7 +86,7 @@ export default {
         },
         onPreviosPage(page) {
             const pages = {
-                [this.pages.SCHEDULE]: this.pages.CALENDAR
+                [this.modalPages.SCHEDULE]: this.modalPages.CALENDAR
             }
 
             this.modalPage = pages[page];
@@ -97,7 +97,7 @@ export default {
             const doctorDateSchedule = await this.getDoctorDateSchedule(date);
             if (doctorDateSchedule.length) {
                 this.doctorDateSchedule = doctorDateSchedule;
-                this.onSetModalPage(this.pages.SCHEDULE);
+                this.onSetModalPage(this.modalPages.SCHEDULE);
             }
         },
         async getDoctorDateSchedule(date) {
