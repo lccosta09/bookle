@@ -46,17 +46,30 @@ export default {
         async onOpenSchedule(date) {
             this.onSetDate(date);
 
-            this.schedule = await this.$store.dispatch({
+            const schedule = await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndDate',
                 doctor: this.doctor,
                 date
             });
 
-            if (!this.schedule.length) {
-                return;
-            }
+            const appointments = await this.$store.dispatch({
+                type: 'appointment/getByDoctorAndDate',
+                doctor: this.doctor,
+                date
+            });
 
-            this.$emit('set-page', this.pages.SCHEDULE);
+            let doctorSchedule = schedule.filter((scheduleInterval) => {
+                const scheduleAppointments = appointments.filter((appointmentInterval) => {
+                    return scheduleInterval.start === appointmentInterval.start && scheduleInterval.end === appointmentInterval.end;
+                });
+
+                return scheduleAppointments.length < scheduleInterval.appointmentsLimit;
+            });
+
+            if (doctorSchedule.length) {
+                this.schedule = doctorSchedule;
+                this.$emit('set-page', this.pages.SCHEDULE);
+            }
         }
     }
 };
