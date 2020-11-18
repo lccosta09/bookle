@@ -2,26 +2,7 @@ const appointment = {
     namespaced: true,
     state() {
         return {
-            appointments: {
-                1: {
-                    1605492000000: [
-                        {
-                            start: '09:30',
-                            end: '10:00',
-                        },
-                    ],
-                    1605578400000: [
-                        {
-                            start: '11:00',
-                            end: '11:30'
-                        },
-                        {
-                            start: '13:30',
-                            end: '14:00'
-                        }
-                    ]
-                }
-            }
+            appointments: {}
         }
     },
     mutations: {
@@ -45,6 +26,20 @@ const appointment = {
             let [, dateappointments] = entries;
 
             return dateappointments;
+        },
+        async add({state}, payload) {
+            const date = new Date(payload.date.year, payload.date.month, payload.date.day);
+            const time = date.getTime();
+            if (!state.appointments[payload.doctor.id]) {
+                state.appointments[payload.doctor.id] = {};
+            }
+
+            if (!state.appointments[payload.doctor.id][time]) {
+                state.appointments[payload.doctor.id][time] = [];
+            }
+
+            state.appointments[payload.doctor.id][time].push(payload.interval);
+            return true;
         }
     }
 };

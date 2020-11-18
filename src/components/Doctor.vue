@@ -9,7 +9,8 @@
             v-if="page === pages.SCHEDULE"
             :date="date"
             :schedule="schedule"
-            v-on:previous-page="$emit('previous-page', page)" />
+            v-on:previous-page="$emit('previous-page', page)"
+            v-on:book="onBook" />
     </div>
 </template>
 
@@ -46,6 +47,13 @@ export default {
         async onOpenSchedule(date) {
             this.onSetDate(date);
 
+            const doctorSchedule = await this.getDoctorsSchedule(date);
+            if (doctorSchedule.length) {
+                this.schedule = doctorSchedule;
+                this.$emit('set-page', this.pages.SCHEDULE);
+            }
+        },
+        async getDoctorsSchedule(date) {
             const schedule = await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndDate',
                 doctor: this.doctor,
@@ -66,9 +74,21 @@ export default {
                 return scheduleAppointments.length < scheduleInterval.appointmentsLimit;
             });
 
-            if (doctorSchedule.length) {
-                this.schedule = doctorSchedule;
-                this.$emit('set-page', this.pages.SCHEDULE);
+            return doctorSchedule;
+        },
+        async onBook(interval) {
+            const added = await this.$store.dispatch({
+                type: 'appointment/add',
+                doctor: this.doctor,
+                date: this.date,
+                interval: {
+                    start: interval.start,
+                    end: interval.end
+                }
+            });
+
+            if (added) {
+                this.schedule = await this.getDoctorsSchedule(this.date);
             }
         }
     }
