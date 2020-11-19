@@ -104,6 +104,10 @@ export default {
             this.modalPage = pages[page];
         },
         async onOpenSchedule(date) {
+            if (date.month !== this.date.month || date.year !== this.date.year) {
+                return;
+            }
+
             this.date = date;
 
             const doctorDateSchedule = await this.getDoctorDateSchedule(date);
