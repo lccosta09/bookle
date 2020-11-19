@@ -22,6 +22,7 @@
                 :page="modalPage"
                 :date="date"
                 :dateSchedule="doctorDateSchedule"
+                :monthSchedule="doctorMonthSchedule"
                 :bookedInterval="bookedInterval"
                 v-on:open-schedule="onOpenSchedule"
                 v-on:book="onBook"
@@ -112,7 +113,7 @@ export default {
             }
         },
         async getDoctorMonthSchedule(date) {
-            const schedule = await this.$store.dispatch({
+            let schedule = await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndMonth',
                 doctor: this.doctor,
                 date
@@ -124,8 +125,21 @@ export default {
                 date
             });
 
-            console.log(schedule);
-            console.log(appointments);
+            Object.entries(schedule).forEach(([timestamp,]) => {
+                const doctorSchedule = schedule[timestamp].filter((scheduleInterval) => {
+                    if (!appointments[timestamp]) {
+                        return true;
+                    }
+
+                    const scheduleAppointments = appointments[timestamp].filter((appointmentInterval) => {
+                        return scheduleInterval.start === appointmentInterval.start && scheduleInterval.end === appointmentInterval.end;
+                    });
+
+                    return scheduleAppointments.length < scheduleInterval.appointmentsLimit;
+                });
+
+                schedule[timestamp] = doctorSchedule;
+            });
 
             return schedule;
         },

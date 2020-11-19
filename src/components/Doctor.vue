@@ -11,6 +11,7 @@
         <Calendar
             v-if="page === pages.CALENDAR"
             :date="date"
+            :schedule="monthSchedule"
             v-on:set-date="$emit('set-date', $event)"
             v-on:choose-date="$emit('open-schedule', $event)" />
         <Schedules
@@ -39,6 +40,7 @@ export default {
         'page',
         'date',
         'dateSchedule',
+        'monthSchedule',
         'bookedInterval'
     ],
     components: {
