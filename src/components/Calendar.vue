@@ -18,7 +18,7 @@
                 </ul>
                 <ul class="pagination pagination-lg" v-for="(week, x) in month" :key="`week-${x}`">
                     <li class="page-item" v-for="(date, y) in week" :key="`date-${y}`">
-                        <button class="page-link" :class="{'sunday': date.sunday, 'other-month': date.otherMonth, 'today': date.today, 'available': date.available}" v-on:click="$emit('choose-date', {'year': date.year, 'month': date.month, 'day': date.day})">{{ date.day }}</button>
+                        <button class="page-link" :class="{'sunday': date.sunday, 'other-month': date.otherMonth, 'available': date.available}" v-on:click="$emit('choose-date', {'year': date.year, 'month': date.month, 'day': date.day})">{{ date.day }}</button>
                     </li>
                 </ul>
             </div>
@@ -71,7 +71,7 @@ export default {
                         sunday: date.getDay() === 0,
                         otherMonth: date.getMonth() !== this.date.month,
                         today: today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getYear() === date.getYear(),
-                        available: schedule.length > 0
+                        available: schedule.length > 0 && date.getTime() >= today.getTime()
                     }];
 
                     date.setDate(date.getDate() + 1);
