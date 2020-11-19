@@ -37,6 +37,23 @@ const schedule = {
                             end: '14:00',
                             appointmentsLimit: 1
                         }
+                    ],
+                    1606788000000: [
+                        {
+                            start: '11:30',
+                            end: '12:00',
+                            appointmentsLimit: 1
+                        },
+                        {
+                            start: '13:00',
+                            end: '14:30',
+                            appointmentsLimit: 1
+                        },
+                        {
+                            start: '15:30',
+                            end: '16:00',
+                            appointmentsLimit: 1
+                        }
                     ]
                 }
             }
@@ -48,14 +65,14 @@ const schedule = {
         async getByDoctorAndDate({state}, payload) {
             const schedules = JSON.parse(JSON.stringify(state.schedules));
 
-            const selecteDate = new Date(payload.date.year, payload.date.month, payload.date.day);
+            const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
             let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctor.id === parseInt(doctorId));
             if (!entries) {
                 return [];
             }
 
             let [, doctorSchedules] = entries;
-            entries = Object.entries(doctorSchedules).find(([timestamp,]) => selecteDate.getTime() === parseInt(timestamp));
+            entries = Object.entries(doctorSchedules).find(([timestamp,]) => selectedDate.getTime() === parseInt(timestamp));
             if (!entries) {
                 return [];
             }
@@ -63,6 +80,27 @@ const schedule = {
             let [, dateSchedules] = entries;
 
             return dateSchedules;
+        },
+        async getByDoctorAndMonth({state}, payload) {
+            const schedules = JSON.parse(JSON.stringify(state.schedules));
+
+            const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
+            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctor.id === parseInt(doctorId));
+            if (!entries) {
+                return [];
+            }
+
+            let [, doctorSchedules] = entries;
+            entries = Object.entries(doctorSchedules).filter(([timestamp,]) => {
+                const date = new Date(parseInt(timestamp));
+                return selectedDate.getMonth() === date.getMonth() && selectedDate.getFullYear() === date.getFullYear();
+            });
+
+            if (!entries) {
+                return [];
+            }
+
+            return Object.fromEntries(entries);
         }
     }
 };

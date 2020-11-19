@@ -70,25 +70,26 @@ export default {
         }
     },
     methods: {
-        openModal(doctor) {
+        async openModal(doctor) {
+            const today = new Date();
+            const date = {
+                year: today.getFullYear(),
+                month: today.getMonth(),
+                day: today.getDate()
+            }
+
             this.isModalOpen = true;
             this.doctor = doctor;
-            const date = new Date();
-
-            this.onSetDate({
-                year: date.getFullYear(),
-                month: date.getMonth(),
-                day: date.getDate()
-            });
-
+            this.doctorMonthSchedule = await this.getDoctorMonthSchedule(date);
+            this.date = date;
             this.modalPage = 'calendar';
         },
         onCloseModal() {
             this.isModalOpen = false;
         },
-        onSetDate(date) {
-            if (this.date.year !== date.year && this.date.month !== date.month) {
-                this.doctorMonthSchedule = this.getDoctorMonthSchedule(date);
+        async onSetDate(date) {
+            if (this.date.year !== date.year ||this.date.month !== date.month) {
+                this.doctorMonthSchedule = await this.getDoctorMonthSchedule(date);
             }
 
             this.date = date;
@@ -102,7 +103,7 @@ export default {
             this.modalPage = pages[page];
         },
         async onOpenSchedule(date) {
-            this.onSetDate(date);
+            this.date = date;
 
             const doctorDateSchedule = await this.getDoctorDateSchedule(date);
             if (doctorDateSchedule.length) {
@@ -111,7 +112,22 @@ export default {
             }
         },
         async getDoctorMonthSchedule(date) {
-            return {'oi': date};
+            const schedule = await this.$store.dispatch({
+                type: 'schedule/getByDoctorAndMonth',
+                doctor: this.doctor,
+                date
+            });
+
+            const appointments = await this.$store.dispatch({
+                type: 'appointment/getByDoctorAndMonth',
+                doctor: this.doctor,
+                date
+            });
+
+            console.log(schedule);
+            console.log(appointments);
+
+            return schedule;
         },
         async getDoctorDateSchedule(date) {
             const schedule = await this.$store.dispatch({
@@ -149,6 +165,7 @@ export default {
 
             if (added) {
                 this.doctorDateSchedule = await this.getDoctorDateSchedule(this.date);
+                this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
                 this.bookedInterval = interval;
                 this.modalPage = this.modalPages.BOOKED_MESSAGE;
             }
