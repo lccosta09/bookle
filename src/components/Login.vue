@@ -1,9 +1,13 @@
 <template>
     <div>
+        <div v-if="loginError" class="alert alert-dismissible alert-danger">
+            {{ loginError }}
+        </div>
+
         <div class="page-header" id="banner">
             <div class="row">
                 <div class="col-lg-8 col-md-7 col-sm-6">
-                    <h1>Registre-se</h1>
+                    <h1>Bem vindo!</h1>
                 </div>
             </div>
         </div>
@@ -18,7 +22,7 @@
                         <div class="form-group">
                             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha" v-model="password">
                         </div>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
+                        <button type="submit" class="btn btn-primary">Entrar</button>
                     </form>
                 </div>
             </div>
@@ -28,24 +32,32 @@
 
 <script>
 export default {
-    name: 'Register',
+    name: 'Login',
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            loginError: ''
         }
     },
     methods: {
-        onSubmit(event) {
+        async onSubmit(event) {
             event.preventDefault();
 
-            this.$store.dispatch({
-                type: 'user/add',
+            const login = await this.$store.dispatch({
+                type: 'user/login',
                 user: {
                     email: this.email,
                     password: this.password
                 }
             });
+
+            if (login) {
+                this.$router.push('doctors');
+                return;
+            }
+
+            this.loginError = 'Usuário e/ou senha inválidos tente novamente';
         }
     }
 }

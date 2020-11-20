@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div v-if="bookingError" class="alert alert-dismissible alert-danger">
+            {{ bookingError }}
+        </div>
+
         <h5 class="date">{{ fullDate }}</h5>
         <div class="intervals">
             <div class="interval" v-for="(inteval, index) in schedule" :key="`inteval-${index}`">
@@ -18,7 +22,8 @@ export default {
     name: 'Schedules',
     props: [
         'date',
-        'schedule'
+        'schedule',
+        'bookingError'
     ],
     computed: {
         fullDate() {

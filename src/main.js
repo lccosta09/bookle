@@ -10,3 +10,14 @@ createApp(App)
     .use(router)
     .use(store)
     .mount('#app');
+
+router.beforeEach((to, from, next) => {
+    if (!store.state.user.loggedUser.email && to.name !== 'login') {
+        next({
+            path: 'login'
+        });
+        return;
+    }
+
+    next();
+});

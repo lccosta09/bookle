@@ -9,7 +9,7 @@
                 <div class="collapse navbar-collapse" :class="{'collapse': collapsed, 'show': !collapsed}" id="navbarResponsive">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <router-link :to="{ name: 'register' }" class="nav-link">Registre-se</router-link>
+                            <router-link :to="{ name: 'doctors' }" class="nav-link">Médicos</router-link>
                         </li>
                     </ul>
                 </div>

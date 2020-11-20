@@ -12,7 +12,7 @@ const appointment = {
             const appointments = JSON.parse(JSON.stringify(state.appointments));
 
             const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
-            let entries = Object.entries(appointments).find(([doctorId,]) => payload.doctor.id === parseInt(doctorId));
+            let entries = Object.entries(appointments).find(([doctorId,]) => payload.doctorId === parseInt(doctorId));
             if (!entries) {
                 return [];
             }
@@ -31,7 +31,7 @@ const appointment = {
             const appointments = JSON.parse(JSON.stringify(state.appointments));
 
             const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
-            let entries = Object.entries(appointments).find(([doctorId,]) => payload.doctor.id === parseInt(doctorId));
+            let entries = Object.entries(appointments).find(([doctorId,]) => payload.doctorId === parseInt(doctorId));
             if (!entries) {
                 return [];
             }
@@ -48,13 +48,38 @@ const appointment = {
 
             return Object.fromEntries(entries);
         },
+        async getByUserAndDoctor({state}, payload) {
+            const appointments = JSON.parse(JSON.stringify(state.appointments));
+
+            let userAppointments = [];
+
+            Object.entries(appointments).forEach(([doctorId, doctorAppointments]) => {
+                if (parseInt(doctorId) !== payload.doctorId) {
+                    return;
+                }
+
+                Object.entries(doctorAppointments).forEach(([timestamp, appointmens]) => {
+                    const date = new Date(timestamp);
+                    const today = new Date();
+
+                    if (date.getTime() < today.today) {
+                        return;
+                    }
+
+                    userAppointments = [...userAppointments, ...appointmens.filter((appointment) => {
+                        return parseInt(appointment.userId) === payload.userId;
+                    })];
+                });
+            });
+
+            return userAppointments;
+        },
         async add({state}, payload) {
             const date = new Date(payload.date.year, payload.date.month, payload.date.day);
             const time = date.getTime();
-
-            state.appointments[payload.doctor.id] = state.appointments[payload.doctor.id] ?? {};
-            state.appointments[payload.doctor.id][time] = state.appointments[payload.doctor.id][time] ?? [];
-            state.appointments[payload.doctor.id][time].push(payload.interval);
+            state.appointments[payload.doctorId] = state.appointments[payload.doctorId] ?? {};
+            state.appointments[payload.doctorId][time] = state.appointments[payload.doctorId][time] ?? [];
+            state.appointments[payload.doctorId][time].push(payload.interval);
             return true;
         }
     }

@@ -24,6 +24,7 @@
                 :dateSchedule="doctorDateSchedule"
                 :monthSchedule="doctorMonthSchedule"
                 :bookedInterval="bookedInterval"
+                :bookingError="bookingError"
                 v-on:open-schedule="onOpenSchedule"
                 v-on:book="onBook"
                 v-on:set-date="onSetDate"
@@ -67,7 +68,8 @@ export default {
             bookedInterval: {
                 start: '',
                 end: ''
-            }
+            },
+            bookingError: ''
         }
     },
     methods: {
@@ -108,6 +110,7 @@ export default {
                 return;
             }
 
+            this.bookingError = '';
             this.date = date;
 
             const doctorDateSchedule = await this.getDoctorDateSchedule(date);
@@ -119,13 +122,13 @@ export default {
         async getDoctorMonthSchedule(date) {
             let schedule = await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndMonth',
-                doctor: this.doctor,
+                doctorId: this.doctor.id,
                 date
             });
 
             const appointments = await this.$store.dispatch({
                 type: 'appointment/getByDoctorAndMonth',
-                doctor: this.doctor,
+                doctorId: this.doctor.id,
                 date
             });
 
@@ -150,13 +153,13 @@ export default {
         async getDoctorDateSchedule(date) {
             const schedule = await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndDate',
-                doctor: this.doctor,
+                doctorId: this.doctor.id,
                 date
             });
 
             const appointments = await this.$store.dispatch({
                 type: 'appointment/getByDoctorAndDate',
-                doctor: this.doctor,
+                doctorId: this.doctor.id,
                 date
             });
 
@@ -171,22 +174,37 @@ export default {
             return doctorSchedule;
         },
         async onBook(interval) {
+            const userAppointments = await this.$store.dispatch({
+                type: 'appointment/getByUserAndDoctor',
+                doctorId: this.doctor.id,
+                userId: this.$store.state.user.loggedUser.id
+            });
+
+            if (userAppointments.length) {
+                this.bookingError = 'Você já possui uma consulta agendada com este médico';
+                return;
+            }
+
             const added = await this.$store.dispatch({
                 type: 'appointment/add',
-                doctor: this.doctor,
+                doctorId: this.doctor.id,
                 date: this.date,
                 interval: {
                     start: interval.start,
-                    end: interval.end
+                    end: interval.end,
+                    userId: this.$store.state.user.loggedUser.id
                 }
             });
 
-            if (added) {
-                this.doctorDateSchedule = await this.getDoctorDateSchedule(this.date);
-                this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
-                this.bookedInterval = interval;
-                this.modalPage = this.modalPages.BOOKED_MESSAGE;
+            if (!added) {
+                this.bookingError = 'Não foi possível realizar o agendamento tente novamente mais tarde';
+                return;
             }
+
+            this.doctorDateSchedule = await this.getDoctorDateSchedule(this.date);
+            this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
+            this.bookedInterval = interval;
+            this.modalPage = this.modalPages.BOOKED_MESSAGE;
         }
     }
 };

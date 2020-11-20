@@ -101,7 +101,7 @@ const schedule = {
             const today = new Date();
 
             const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
-            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctor.id === parseInt(doctorId));
+            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctorId === parseInt(doctorId));
             if (!entries) {
                 return [];
             }
@@ -120,7 +120,7 @@ const schedule = {
             const schedules = JSON.parse(JSON.stringify(state.schedules));
 
             const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
-            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctor.id === parseInt(doctorId));
+            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctorId === parseInt(doctorId));
             if (!entries) {
                 return [];
             }

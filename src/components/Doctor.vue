@@ -18,6 +18,7 @@
             v-if="page === pages.SCHEDULE"
             :date="date"
             :schedule="dateSchedule"
+            :bookingError="bookingError"
             v-on:book="$emit('book', $event)" />
         <BookedMessage
             v-if="page === pages.BOOKED_MESSAGE"
@@ -41,7 +42,8 @@ export default {
         'date',
         'dateSchedule',
         'monthSchedule',
-        'bookedInterval'
+        'bookedInterval',
+        'bookingError'
     ],
     components: {
         Calendar,
