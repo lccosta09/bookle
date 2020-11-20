@@ -1,8 +1,11 @@
 <template>
     <div>
-        <div v-if="bookingError" class="alert alert-dismissible alert-danger">
+        <FlashMessage
+            :visible="this.bookingError"
+            :type="'danger'"
+            v-on:close="() => $emit('clear-booking-error')">
             {{ bookingError }}
-        </div>
+        </FlashMessage>
 
         <h5 class="date">{{ fullDate }}</h5>
         <div class="intervals">
@@ -17,9 +20,13 @@
 </template>
 
 <script>
+import FlashMessage from './FlashMessage.vue';
 
 export default {
     name: 'Schedules',
+    components: {
+        FlashMessage
+    },
     props: [
         'date',
         'schedule',

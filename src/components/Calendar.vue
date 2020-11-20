@@ -3,9 +3,9 @@
         <div class="calendar-wrapper">
             <div class="calendar">
                 <div class="btn-toolbar">
-                    <button type="button" class="btn btn-secondary prev" v-on:click="() => prevMonth()">&lt;</button>
+                    <button type="button" class="btn btn-secondary prev" v-on:click="() => this.prevMonth()">&lt;</button>
                     <div class="month">{{ monthName }} {{ date.year }}</div>
-                    <button type="button" class="btn btn-secondary next" v-on:click="() => nextMonth()">&gt;</button>
+                    <button type="button" class="btn btn-secondary next" v-on:click="() => this.nextMonth()">&gt;</button>
                 </div>
                 <ul class="pagination pagination-lg weekdays">
                     <li class="page-item"><button class="page-link">D</button></li>

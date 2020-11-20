@@ -15,7 +15,10 @@
                 </div>
             </div>
         </div>
-        <Modal :title="doctor.name" :isOpen="isModalOpen" v-on:close="onCloseModal">
+        <Modal
+            :title="doctor.name"
+            :isOpen="isModalOpen"
+            v-on:close="() => this.isModalOpen = false">
             <Doctor
                 :doctor="doctor"
                 :pages="modalPages"
@@ -26,9 +29,10 @@
                 :bookedInterval="bookedInterval"
                 :bookingError="bookingError"
                 v-on:open-schedule="onOpenSchedule"
-                v-on:book="onBook"
                 v-on:set-date="onSetDate"
-                v-on:previous-page="onPreviosPage" />
+                v-on:previous-page="onPreviosPage"
+                v-on:book="onBook"
+                v-on:clear-booking-error="() => this.bookingError = ''" />
         </Modal>
     </div>
 </template>
@@ -86,9 +90,6 @@ export default {
             this.doctorMonthSchedule = await this.getDoctorMonthSchedule(date);
             this.date = date;
             this.modalPage = 'calendar';
-        },
-        onCloseModal() {
-            this.isModalOpen = false;
         },
         async onSetDate(date) {
             if (this.date.year !== date.year ||this.date.month !== date.month) {

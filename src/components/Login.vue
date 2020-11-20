@@ -1,8 +1,11 @@
 <template>
     <div>
-        <div v-if="loginError" class="alert alert-dismissible alert-danger">
+        <FlashMessage
+            :visible="loginError"
+            :type="'danger'"
+            v-on:close="() => this.loginError = ''">
             {{ loginError }}
-        </div>
+        </FlashMessage>
 
         <div class="page-header" id="banner">
             <div class="row">
@@ -31,8 +34,13 @@
 </template>
 
 <script>
+import FlashMessage from './FlashMessage.vue';
+
 export default {
     name: 'Login',
+    components: {
+        FlashMessage
+    },
     data() {
         return {
             email: '',
