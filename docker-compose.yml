@@ -8,24 +8,30 @@ services:
     environment:
       - TZ=America/Sao_Paulo
     volumes:
-      - "./dist:/var/www/html/bookle"
-      - "./server.conf:/etc/nginx/conf.d/server.conf"
+      - "./frontend/dist:/var/www/html/frontend"
+      - "./frontend/server.conf:/etc/nginx/conf.d/server.conf"
     networks:
       - bookle-network
-  bookle:
+  bookle-frontend:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: bookle:latest
-    container_name: bookle.docker
+      dockerfile: docker/node/Dockerfile
+    image: bookle-frontend:latest
+    container_name: bookle-frontend.docker
     ports:
       - "1414:8080"
     environment:
       - TZ=America/Sao_Paulo
     volumes:
-      - ".:/var/www/html/bookle"
+      - "./frontend:/var/www/html/frontend"
     networks:
       - bookle-network
+  bookle-php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: bookle-php:latest
+    container_name: bookle-php.docker
 networks:
   bookle-network:
     driver: bridge
