@@ -1,29 +1,29 @@
 version: "3.7"
 services:
   bookle-nginx:
-    image: nginx:latest
+    image: nginx:alpine
     container_name: bookle-nginx.docker
     ports:
       - "1212:80"
     environment:
       - TZ=America/Sao_Paulo
     volumes:
-      - "./frontend/dist:/var/www/html/frontend"
-      - "./frontend/server.conf:/etc/nginx/conf.d/server.conf"
+      - "./site/dist:/var/www/html/bookle"
+      - "./site/server.conf:/etc/nginx/conf.d/server.conf"
     networks:
       - bookle-network
-  bookle-frontend:
+  bookle-site:
     build:
       context: .
       dockerfile: docker/node/Dockerfile
-    image: bookle-frontend:latest
-    container_name: bookle-frontend.docker
+    image: bookle-site:latest
+    container_name: bookle-site.docker
     ports:
       - "1414:8080"
     environment:
       - TZ=America/Sao_Paulo
     volumes:
-      - "./frontend:/var/www/html/frontend"
+      - "./site:/var/www/html/site"
     networks:
       - bookle-network
   bookle-php:

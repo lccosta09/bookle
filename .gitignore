@@ -1,6 +1,6 @@
-/frontend/.DS_Store
-/frontend/node_modules
-/frontend/dist
+/site/.DS_Store
+/site/node_modules
+/site/dist
 
 
 # local env files
@@ -8,10 +8,10 @@
 .env.*.local
 
 # Log files
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
-/frontend/pnpm-debug.log*
+/site/npm-debug.log*
+/site/yarn-debug.log*
+/site/yarn-error.log*
+/site/pnpm-debug.log*
 
 # Editor directories and files
 .idea
