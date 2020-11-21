@@ -10,6 +10,7 @@
 
         <Calendar
             v-if="page === pages.CALENDAR"
+            :today="today"
             :date="date"
             :schedule="monthSchedule"
             v-on:set-date="$emit('set-date', $event)"
@@ -40,6 +41,7 @@ export default {
         'doctor',
         'pages',
         'page',
+        'today',
         'date',
         'dateSchedule',
         'monthSchedule',

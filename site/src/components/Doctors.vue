@@ -23,6 +23,7 @@
                 :doctor="doctor"
                 :pages="modalPages"
                 :page="modalPage"
+                :today="today"
                 :date="date"
                 :dateSchedule="doctorDateSchedule"
                 :monthSchedule="doctorMonthSchedule"
@@ -48,7 +49,6 @@ export default {
         Doctor
     },
     data() {
-        const date = new Date();
         const modalPages = {
             CALENDAR: 'calendar',
             SCHEDULE: 'schedule',
@@ -62,11 +62,8 @@ export default {
             },
             modalPages,
             modalPage: modalPages.CALENDAR,
-            date: {
-                year: date.getFullYear(),
-                month: date.getMonth(),
-                day: date.getDate()
-            },
+            date: {},
+            today: {},
             doctorMonthSchedule: {},
             doctorDateSchedule: [],
             bookedInterval: {
@@ -76,19 +73,34 @@ export default {
             bookingError: ''
         }
     },
+    async mounted() {
+        await this.$store.dispatch('date/getTime');
+
+        const date = new Date(this.$store.state.date.time);
+        this.today = {
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            day: date.getDate()
+        };
+
+        this.date = {...this.today};
+    },
     methods: {
         async openModal(doctor) {
-            const today = new Date();
-            const date = {
-                year: today.getFullYear(),
-                month: today.getMonth(),
-                day: today.getDate()
-            }
+            await this.$store.dispatch('date/getTime');
+
+            const date = new Date(this.$store.state.date.time);
+            this.today = {
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                day: date.getDate()
+            };
+
+            this.date = {...this.today};
 
             this.isModalOpen = true;
             this.doctor = doctor;
             this.doctorMonthSchedule = await this.getDoctorMonthSchedule(date);
-            this.date = date;
             this.modalPage = 'calendar';
         },
         async onSetDate(date) {

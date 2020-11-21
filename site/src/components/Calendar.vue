@@ -29,28 +29,20 @@
 <script>
 
 export default {
-    name: 'Doctor',
-    props: {
-        'doctor': {},
-        'date': {
-            default: () => {
-                const date = new Date();
-                return {
-                    year: date.getFullYear(),
-                    month: date.getMonth(),
-                    day: date.getDate()
-                };
-            }
-        },
-        'schedule': {}
-    },
+    name: 'Calendar',
+    props: [
+        'doctor',
+        'today',
+        'date',
+        'schedule'
+    ],
     computed: {
         monthName() {
             const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
             return months[this.date.month];
         },
         month() {
-            const today = new Date();
+            const today = new Date(this.today.year, this.today.month, this.today.day);
             let date = new Date(this.date.year, this.date.month, 1);
             let lastDate = new Date(this.date.year, this.date.month, 1);
             lastDate.setMonth(lastDate.getMonth() + 1);
@@ -70,7 +62,7 @@ export default {
                         day: date.getDate(),
                         sunday: date.getDay() === 0,
                         otherMonth: date.getMonth() !== this.date.month,
-                        today: today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getYear() === date.getYear(),
+                        today: today.getFullYear() === date.getFullYear() && today.getMonth() === date.getMonth() && today.getDate() === date.getDate(),
                         available: schedule.length > 0 && date.getTime() >= today.getTime()
                     }];
 
