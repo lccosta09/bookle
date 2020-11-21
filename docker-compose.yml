@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   bookle-nginx:
-    image: nginx:alpine
+    image: nginx:latest
     container_name: bookle-nginx.docker
     ports:
       - "1212:80"
@@ -9,7 +9,9 @@ services:
       - TZ=America/Sao_Paulo
     volumes:
       - "./site/dist:/var/www/html/bookle"
-      - "./site/server.conf:/etc/nginx/conf.d/server.conf"
+      - "./site/site.conf:/etc/nginx/conf.d/site.conf"
+      - "./api:/var/www/html/api"
+      - "./api/api.conf:/etc/nginx/conf.d/api.conf"
     networks:
       - bookle-network
   bookle-site:
@@ -32,6 +34,10 @@ services:
       dockerfile: docker/php/Dockerfile
     image: bookle-php:latest
     container_name: bookle-php.docker
+    volumes:
+      - "./api:/var/www/html/api"
+    networks:
+      - bookle-network
 networks:
   bookle-network:
     driver: bridge
