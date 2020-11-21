@@ -100,7 +100,7 @@ export default {
 
             this.isModalOpen = true;
             this.doctor = doctor;
-            this.doctorMonthSchedule = await this.getDoctorMonthSchedule(date);
+            this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
             this.modalPage = 'calendar';
         },
         async onSetDate(date) {
