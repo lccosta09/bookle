@@ -9,7 +9,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <slot></slot>
+                    <Loading :loading="loadind" />
+                    <slot v-if="!loadind"></slot>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" v-on:click="$emit('close')">Fechar</button>
@@ -21,13 +22,18 @@
 </template>
 
 <script>
+import Loading from './Loading.vue';
 
 export default {
     name: 'Modal',
     props: [
         'title',
+        'loadind',
         'isOpen'
-    ]
+    ],
+    components: {
+        Loading
+    }
 }
 </script>
 

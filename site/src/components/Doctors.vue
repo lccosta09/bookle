@@ -18,6 +18,7 @@
         </div>
         <Modal
             :title="doctor.name"
+            :loadind="loadingModal"
             :isOpen="isModalOpen"
             v-on:close="() => this.isModalOpen = false">
             <Doctor
@@ -60,6 +61,7 @@ export default {
 
         return {
             loadingDoctors: true,
+            loadingModal: true,
             isModalOpen: false,
             doctor: {
                 name: '',
@@ -101,6 +103,8 @@ export default {
     },
     methods: {
         async openModal(doctor) {
+            this.loadingModal = true;
+
             await this.$store.dispatch('date/getTime');
 
             const date = new Date(this.$store.state.date.time);
@@ -116,10 +120,14 @@ export default {
             this.doctor = doctor;
             this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
             this.modalPage = 'calendar';
+
+            this.loadingModal = false;
         },
         async onSetDate(date) {
             if (this.date.year !== date.year ||this.date.month !== date.month) {
+                this.loadingModal = true;
                 this.doctorMonthSchedule = await this.getDoctorMonthSchedule(date);
+                this.loadingModal = false;
             }
 
             this.date = date;
