@@ -14,12 +14,16 @@ const schedule = {
     },
     actions: {
         async getByDoctorAndDate({commit}, payload) {
+            let month = payload.date.month + 1;
+            const day = payload.date.day.toString().length < 2 ? '0'.repeat(2 - payload.date.day.toString().length) + payload.date.day : payload.date.day.toString();
+            month = month.toString().length < 2 ? '0'.repeat(2 - month.toString().length) + month : month.toString();
+
             await axios.get('http://bookle-api.docker:1212/schedules.php', {
                     params: {
                         doctorId: payload.doctorId,
                         year: payload.date.year,
-                        month: payload.date.month + 1,
-                        date: `${payload.date.year}-${payload.date.month + 1}-${payload.date.day}`
+                        month,
+                        date: `${payload.date.year}-${month}-${day}`
                     }
                 })
                 .then(response => {
@@ -27,11 +31,13 @@ const schedule = {
                 });
         },
         async getByDoctorAndMonth({commit}, payload) {
+            let month = payload.date.month + 1;
+            month = month.toString().length < 2 ? '0'.repeat(2 - month.toString().length) + month : month.toString();
             await axios.get('http://bookle-api.docker:1212/schedules.php', {
                     params: {
                         doctorId: payload.doctorId,
                         year: payload.date.year,
-                        month: payload.date.month + 1
+                        month
                     }
                 })
                 .then(response => {

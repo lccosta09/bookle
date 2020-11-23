@@ -145,6 +145,7 @@ export default {
                 return;
             }
 
+            this.loadingModal = true;
             this.bookingError = '';
             this.date = date;
 
@@ -153,6 +154,8 @@ export default {
                 this.doctorDateSchedule = doctorDateSchedule;
                 this.modalPage = this.modalPages.SCHEDULE;
             }
+
+            this.loadingModal = false;
         },
         async getDoctorMonthSchedule(date) {
             await this.$store.dispatch({
