@@ -147,11 +147,13 @@ export default {
             }
         },
         async getDoctorMonthSchedule(date) {
-            let schedule = await this.$store.dispatch({
+            await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndMonth',
                 doctorId: this.doctor.id,
                 date
             });
+
+            let schedule = JSON.parse(JSON.stringify(this.$store.state.schedule.schedules));
 
             const appointments = await this.$store.dispatch({
                 type: 'appointment/getByDoctorAndMonth',
@@ -178,11 +180,13 @@ export default {
             return schedule;
         },
         async getDoctorDateSchedule(date) {
-            const schedule = await this.$store.dispatch({
+            await this.$store.dispatch({
                 type: 'schedule/getByDoctorAndDate',
                 doctorId: this.doctor.id,
                 date
             });
+
+            const schedule = JSON.parse(JSON.stringify(this.$store.state.schedule.schedules));
 
             const appointments = await this.$store.dispatch({
                 type: 'appointment/getByDoctorAndDate',

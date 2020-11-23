@@ -279,4 +279,13 @@ foreach ($schedules as $schedule) {
     ];
 }
 
+if (!empty($_GET['doctorId'])) {
+    $response = !empty($response[$_GET['doctorId']]) ? $response[$_GET['doctorId']] : [];
+}
+
+if (!empty($_GET['date'])) {
+    $date = strtotime(date('D M d Y 00:00:00 O', strtotime($_GET['date']))) . '000';
+    $response = !empty($response[$date]) ? $response[$date] : [];
+}
+
 echo json_encode($response);

@@ -54,7 +54,15 @@ export default {
                 let week = [];
                 for (let i = 0; i < 7; i++) {
                     const scheduleDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-                    const schedule = this.schedule[scheduleDate.getTime()] ?? [];
+
+                    const schedule = Object.values(
+                        Object.fromEntries(
+                            Object.entries(this.schedule).filter(entry => {
+                                const date = new Date(parseInt(entry[0]));
+                                return date.getFullYear() === scheduleDate.getFullYear() && date.getMonth() === scheduleDate.getMonth() && date.getDate() === scheduleDate.getDate();
+                            })
+                        )
+                    );
 
                     week = [...week, {
                         year: date.getFullYear(),

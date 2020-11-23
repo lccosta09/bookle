@@ -1,228 +1,42 @@
+import axios from 'axios';
+
 const schedule = {
     namespaced: true,
     state() {
         return {
-            schedules: {
-                1: {
-                    1605492000000: [
-                        {
-                            start: '09:30',
-                            end: '10:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '14:00',
-                            end: '14:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '15:00',
-                            end: '15:30',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1605578400000: [
-                        {
-                            start: '10:30',
-                            end: '11:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '11:00',
-                            end: '11:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '13:30',
-                            end: '14:00',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1606269600000: [
-                        {
-                            start: '09:30',
-                            end: '10:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '14:00',
-                            end: '14:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '15:00',
-                            end: '15:30',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1606356000000: [
-                        {
-                            start: '10:30',
-                            end: '11:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '11:00',
-                            end: '11:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '13:30',
-                            end: '14:00',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1606788000000: [
-                        {
-                            start: '11:30',
-                            end: '12:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '13:00',
-                            end: '14:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '15:30',
-                            end: '16:00',
-                            appointmentsLimit: 1
-                        }
-                    ]
-                },
-                2: {
-                    1605492000000: [
-                        {
-                            start: '09:30',
-                            end: '10:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '14:00',
-                            end: '14:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '15:00',
-                            end: '15:30',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1605578400000: [
-                        {
-                            start: '10:30',
-                            end: '11:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '11:00',
-                            end: '11:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '13:30',
-                            end: '14:00',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1606269600000: [
-                        {
-                            start: '09:30',
-                            end: '10:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '14:00',
-                            end: '14:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '15:00',
-                            end: '15:30',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1606356000000: [
-                        {
-                            start: '10:30',
-                            end: '11:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '11:00',
-                            end: '11:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '13:30',
-                            end: '14:00',
-                            appointmentsLimit: 1
-                        }
-                    ],
-                    1606788000000: [
-                        {
-                            start: '11:30',
-                            end: '12:00',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '13:00',
-                            end: '14:30',
-                            appointmentsLimit: 1
-                        },
-                        {
-                            start: '15:30',
-                            end: '16:00',
-                            appointmentsLimit: 1
-                        }
-                    ]
-                }
-            }
+            schedules: {}
         }
     },
     mutations: {
+        setSchedule(state, payload) {
+            state.schedules = payload;
+        }
     },
     actions: {
-        async getByDoctorAndDate({state}, payload) {
-            const schedules = JSON.parse(JSON.stringify(state.schedules));
-            const today = new Date();
-
-            const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
-            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctorId === parseInt(doctorId));
-            if (!entries) {
-                return [];
-            }
-
-            let [, doctorSchedules] = entries;
-            entries = Object.entries(doctorSchedules).find(([timestamp,]) => selectedDate.getTime() === parseInt(timestamp) && selectedDate.getTime() >= today.getTime());
-            if (!entries) {
-                return [];
-            }
-
-            let [, dateSchedules] = entries;
-
-            return dateSchedules;
+        async getByDoctorAndDate({commit}, payload) {
+            await axios.get('http://bookle-api.docker:1212/schedules.php', {
+                    params: {
+                        doctorId: payload.doctorId,
+                        year: payload.date.year,
+                        month: payload.date.month + 1,
+                        date: `${payload.date.year}-${payload.date.month + 1}-${payload.date.day}`
+                    }
+                })
+                .then(response => {
+                    commit('setSchedule', response.data)
+                });
         },
-        async getByDoctorAndMonth({state}, payload) {
-            const schedules = JSON.parse(JSON.stringify(state.schedules));
-
-            const selectedDate = new Date(payload.date.year, payload.date.month, payload.date.day);
-            let entries = Object.entries(schedules).find(([doctorId,]) => payload.doctorId === parseInt(doctorId));
-            if (!entries) {
-                return [];
-            }
-
-            let [, doctorSchedules] = entries;
-            entries = Object.entries(doctorSchedules).filter(([timestamp,]) => {
-                const date = new Date(parseInt(timestamp));
-                return selectedDate.getMonth() === date.getMonth() && selectedDate.getFullYear() === date.getFullYear();
-            });
-
-            if (!entries) {
-                return [];
-            }
-
-            return Object.fromEntries(entries);
+        async getByDoctorAndMonth({commit}, payload) {
+            await axios.get('http://bookle-api.docker:1212/schedules.php', {
+                    params: {
+                        doctorId: payload.doctorId,
+                        year: payload.date.year,
+                        month: payload.date.month + 1
+                    }
+                })
+                .then(response => {
+                    commit('setSchedule', response.data)
+                });
         }
     }
 };
