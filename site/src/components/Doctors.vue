@@ -216,6 +216,8 @@ export default {
             return doctorSchedule;
         },
         async onBook(interval) {
+            this.loadingModal = true;
+
             const userAppointments = await this.$store.dispatch({
                 type: 'appointment/getByUserAndDoctor',
                 doctorId: this.doctor.id,
@@ -224,6 +226,7 @@ export default {
 
             if (userAppointments.length) {
                 this.bookingError = 'Você já possui uma consulta agendada com este médico';
+                this.loadingModal = false;
                 return;
             }
 
@@ -240,6 +243,7 @@ export default {
 
             if (!added) {
                 this.bookingError = 'Não foi possível realizar o agendamento tente novamente mais tarde';
+                this.loadingModal = false;
                 return;
             }
 
@@ -247,6 +251,7 @@ export default {
             this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
             this.bookedInterval = interval;
             this.modalPage = this.modalPages.BOOKED_MESSAGE;
+            this.loadingModal = false;
         }
     }
 };

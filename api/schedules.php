@@ -8,7 +8,7 @@ date_default_timezone_set('America/Sao_Paulo');
 $schedules = [
     [
         'id' => 1,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-16',
         'start' => '09:30',
         'end' => '10:00',
@@ -16,7 +16,7 @@ $schedules = [
     ],
     [
         'id' => 2,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-16',
         'start' => '14:00',
         'end' => '14:30',
@@ -24,7 +24,7 @@ $schedules = [
     ],
     [
         'id' => 3,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-16',
         'start' => '15:00',
         'end' => '15:30',
@@ -32,7 +32,7 @@ $schedules = [
     ],
     [
         'id' => 4,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-17',
         'start' => '10:30',
         'end' => '11:00',
@@ -40,7 +40,7 @@ $schedules = [
     ],
     [
         'id' => 5,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-17',
         'start' => '11:00',
         'end' => '11:30',
@@ -48,7 +48,7 @@ $schedules = [
     ],
     [
         'id' => 6,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-17',
         'start' => '13:30',
         'end' => '14:00',
@@ -56,7 +56,7 @@ $schedules = [
     ],
     [
         'id' => 7,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-25',
         'start' => '09:30',
         'end' => '10:00',
@@ -64,7 +64,7 @@ $schedules = [
     ],
     [
         'id' => 8,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-25',
         'start' => '14:00',
         'end' => '14:30',
@@ -72,7 +72,7 @@ $schedules = [
     ],
     [
         'id' => 9,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-25',
         'start' => '15:00',
         'end' => '15:30',
@@ -80,7 +80,7 @@ $schedules = [
     ],
     [
         'id' => 10,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-26',
         'start' => '10:30',
         'end' => '11:00',
@@ -88,7 +88,7 @@ $schedules = [
     ],
     [
         'id' => 11,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-26',
         'start' => '11:00',
         'end' => '11:30',
@@ -96,7 +96,7 @@ $schedules = [
     ],
     [
         'id' => 12,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-11-26',
         'start' => '13:30',
         'end' => '14:30',
@@ -104,7 +104,7 @@ $schedules = [
     ],
     [
         'id' => 13,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-12-01',
         'start' => '11:30',
         'end' => '12:00',
@@ -112,7 +112,7 @@ $schedules = [
     ],
     [
         'id' => 14,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-12-01',
         'start' => '13:00',
         'end' => '14:30',
@@ -120,7 +120,7 @@ $schedules = [
     ],
     [
         'id' => 15,
-        'doctor' => 1,
+        'doctorId' => 1,
         'date' => '2020-12-01',
         'start' => '15:30',
         'end' => '16:00',
@@ -128,7 +128,7 @@ $schedules = [
     ],
     [
         'id' => 1,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-16',
         'start' => '09:30',
         'end' => '10:00',
@@ -136,7 +136,7 @@ $schedules = [
     ],
     [
         'id' => 2,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-16',
         'start' => '14:00',
         'end' => '14:30',
@@ -144,7 +144,7 @@ $schedules = [
     ],
     [
         'id' => 3,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-16',
         'start' => '15:00',
         'end' => '15:30',
@@ -152,7 +152,7 @@ $schedules = [
     ],
     [
         'id' => 4,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-17',
         'start' => '10:30',
         'end' => '11:00',
@@ -160,7 +160,7 @@ $schedules = [
     ],
     [
         'id' => 5,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-17',
         'start' => '11:00',
         'end' => '11:30',
@@ -168,7 +168,7 @@ $schedules = [
     ],
     [
         'id' => 6,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-17',
         'start' => '13:30',
         'end' => '14:00',
@@ -176,7 +176,7 @@ $schedules = [
     ],
     [
         'id' => 7,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-25',
         'start' => '09:30',
         'end' => '10:00',
@@ -184,7 +184,7 @@ $schedules = [
     ],
     [
         'id' => 8,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-25',
         'start' => '14:00',
         'end' => '14:30',
@@ -192,7 +192,7 @@ $schedules = [
     ],
     [
         'id' => 9,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-25',
         'start' => '15:00',
         'end' => '15:30',
@@ -200,7 +200,7 @@ $schedules = [
     ],
     [
         'id' => 10,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-26',
         'start' => '10:30',
         'end' => '11:00',
@@ -208,7 +208,7 @@ $schedules = [
     ],
     [
         'id' => 11,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-26',
         'start' => '11:00',
         'end' => '11:30',
@@ -216,7 +216,7 @@ $schedules = [
     ],
     [
         'id' => 12,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-11-26',
         'start' => '13:30',
         'end' => '14:30',
@@ -224,7 +224,7 @@ $schedules = [
     ],
     [
         'id' => 13,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-12-01',
         'start' => '11:30',
         'end' => '12:00',
@@ -232,7 +232,7 @@ $schedules = [
     ],
     [
         'id' => 14,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-12-01',
         'start' => '13:00',
         'end' => '14:30',
@@ -240,7 +240,7 @@ $schedules = [
     ],
     [
         'id' => 15,
-        'doctor' => 2,
+        'doctorId' => 2,
         'date' => '2020-12-01',
         'start' => '15:30',
         'end' => '16:00',
@@ -262,7 +262,7 @@ foreach ($schedules as $schedule) {
         continue;
     }
 
-    if (!empty($_GET['doctorId']) && $_GET['doctorId'] != $schedule['doctor']) {
+    if (!empty($_GET['doctorId']) && $_GET['doctorId'] != $schedule['doctorId']) {
         continue;
     }
 
@@ -271,7 +271,7 @@ foreach ($schedules as $schedule) {
     }
 
     $time = strtotime(date('D M d Y 00:00:00 O', $date)) . '000';
-    $response[$schedule['doctor']][$time][] = [
+    $response[$schedule['doctorId']][$time][] = [
         'start' => $schedule['start'],
         'end' => $schedule['end'],
         'date' => $schedule['date'],
