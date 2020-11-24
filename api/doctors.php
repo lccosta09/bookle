@@ -1,55 +1,19 @@
 <?php
-sleep(2);
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header('Content-Type: application/json');
 date_default_timezone_set('America/Sao_Paulo');
 
-$response = [
-    [
-        'id' => 1,
-        'name' => 'Edilaine de Olveira Miguel',
-        'address' => 'Av. Rio Branco',
-        'number' => '1357',
-        'zipcode' => '17526-693',
-        'neighborhood' => 'Alto Cafezal',
-        'city' => 'Marília',
-        'state' => 'SP',
-        'description' => 'Clínico geral com mais de 10 anos de experiência.'
-    ],
-    [
-        'id' => 2,
-        'name' => 'Benedito Pilon',
-        'address' => 'Rua Vinte e um de abril',
-        'number' => '143',
-        'zipcode' => '17516-170',
-        'neighborhood' => 'Jardim Maria Izabel',
-        'city' => 'Marília',
-        'state' => 'SP',
-        'description' => 'Cirurgião geral, gastroenterologista e coloproctologista com mais de 30 anos de experiência'
-    ],
-    [
-        'id' => 3,
-        'name' => 'Gisele Nicolielo Soria',
-        'address' => 'Av.Rio Branco',
-        'number' => '1132',
-        'zipcode' => '17502-000',
-        'neighborhood' => 'Alto Cafezal',
-        'city' => 'Marília',
-        'state' => 'SP',
-        'description' => 'Ginecologista e Obstetra atendendo Marília e região'
-    ],
-    [
-        'id' => 4,
-        'name' => 'Gisele César de Rossi',
-        'address' => 'Av.Cascata',
-        'number' => '47',
-        'zipcode' => '17515-300',
-        'neighborhood' => 'Jardim Maria Izabel',
-        'city' => 'Marília',
-        'state' => 'SP',
-        'description' => 'Pneumologista atendendo em Marília e região ha 25 anos'
-    ]
-];
+$conn = new PDO('mysql:host=bookle-mysql.docker;dbname=bookle', 'root', 'bookle');
+
+$sql = "SELECT doctors.id, users.name, doctors.description, addresses.address, addresses.number, addresses.zipcode, addresses.neighborhood, addresses.city, addresses.state
+    FROM users
+    INNER JOIN doctors ON (users.id = doctors.user_id)
+    INNER JOIN addresses ON (users.id = addresses.user_id)";
+$data = $conn->query($sql);
+$response = [];
+foreach ($data as $doctor) {
+    $response[] = $doctor;
+}
 
 echo json_encode($response);
