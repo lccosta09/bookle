@@ -1,6 +1,7 @@
 /site/.DS_Store
 /site/node_modules
 /site/dist
+/mysql/data
 
 
 # local env files
