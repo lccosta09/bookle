@@ -102,6 +102,7 @@ export default {
     },
     methods: {
         async openModal(doctor) {
+            this.isModalOpen = true;
             this.loadingModal = true;
 
             await this.$store.dispatch('date/getTime');
@@ -115,7 +116,6 @@ export default {
 
             this.date = {...this.today};
 
-            this.isModalOpen = true;
             this.doctor = doctor;
             this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
             this.modalPage = 'calendar';
