@@ -29,7 +29,8 @@ const user = {
                     'Content-Type': 'application/json',
                 })
                 .then(response => {
-                    commit('setLoggedUser', response.data)
+                    commit('setLoggedUser', response.data);
+                    commit('setLoginErrorMessage', '');
                 })
                 .catch(error => {
                     commit('setLoginErrorMessage', error.response.data.message);

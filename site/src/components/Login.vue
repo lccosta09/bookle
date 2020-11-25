@@ -1,32 +1,35 @@
 <template>
     <div>
-        <FlashMessage
-            :visible="loginErrorMessage"
-            :type="'danger'"
-            v-on:close="() => this.loginErrorMessage = ''">
-            {{ loginErrorMessage }}
-        </FlashMessage>
+        <Loading :loading="loading" />
+        <div v-if="!loading">
+            <FlashMessage
+                :visible="loginErrorMessage"
+                :type="'danger'"
+                v-on:close="() => this.loginErrorMessage = ''">
+                {{ loginErrorMessage }}
+            </FlashMessage>
 
-        <div class="page-header" id="banner">
-            <div class="row">
-                <div class="col-lg-8 col-md-7 col-sm-6">
-                    <h1>Bem vindo!</h1>
+            <div class="page-header" id="banner">
+                <div class="row">
+                    <div class="col-lg-8 col-md-7 col-sm-6">
+                        <h1>Bem vindo!</h1>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="bs-component">
-                    <form v-on:submit="onSubmit">
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail" v-model="email">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha" v-model="password">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Entrar</button>
-                    </form>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="bs-component">
+                        <form v-on:submit="onSubmit">
+                            <div class="form-group">
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="E-mail" v-model="email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Senha" v-model="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,15 +37,18 @@
 </template>
 
 <script>
+import Loading from './Loading.vue';
 import FlashMessage from './FlashMessage.vue';
 
 export default {
     name: 'Login',
     components: {
+        Loading,
         FlashMessage
     },
     data() {
         return {
+            loading: false,
             email: '',
             password: '',
             loginErrorMessage: ''
@@ -50,6 +56,8 @@ export default {
     },
     methods: {
         async onSubmit(event) {
+            this.loading = true;
+
             event.preventDefault();
 
             await this.$store.dispatch({
@@ -57,6 +65,10 @@ export default {
                 email: this.email,
                 password: this.password
             });
+
+            this.email = '';
+            this.password = '';
+            this.loading = false;
 
             if (this.$store.state.user.loggedUser.email) {
                 this.$router.push('doctors');

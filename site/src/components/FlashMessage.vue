@@ -24,9 +24,14 @@ export default {
             }
         }
     },
-    updated() {
-        if (this.visible) {
-            setTimeout(() => this.$emit('close'), this.timeout);
+    watch: {
+        visible: {
+            immediate: true,
+            handler(newValue, oldValue) {
+                if (newValue !== oldValue && newValue) {
+                    setTimeout(() => this.$emit('close'), this.timeout);
+                }
+            }
         }
     }
 };
