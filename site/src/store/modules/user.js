@@ -1,43 +1,39 @@
+import axios from 'axios';
+
 const user = {
     namespaced: true,
     state() {
         return {
-            users: [
-                {
-                    id: 1,
-                    email: 'correialesp@gmail.com',
-                    password: '1234'
-                },
-                {
-                    id: 2,
-                    email: 'felipe.oliveira@gmail.com',
-                    password: '1234'
-                }
-            ],
+            users: [],
             loggedUser: {
                 email: '',
                 password: ''
-            }
+            },
+            loginErrorMessage: ''
         }
     },
     mutations: {
-        add(state, payload) {
-            state.users = [...state.users, payload.user];
+        setLoggedUser(state, payload) {
+            state.loggedUser = payload;
+        },
+        setLoginErrorMessage(state, payload) {
+            state.loginErrorMessage = payload;
         }
     },
     actions: {
-        add(context, payload) {
-            context.commit('add', payload);
-        },
-        async login({state}, payload) {
-            const users = JSON.parse(JSON.stringify(state.users));
-            const user = users.find(user => user.email === payload.user.email && user.password === payload.user.password);
-            if (user) {
-                state.loggedUser = user;
-                return true;
-            }
-
-            return false;
+        async login({commit}, payload) {
+            await axios.post('http://bookle-api.docker:1212/login.php', {
+                    email: payload.email,
+                    password: payload.password
+                }, {
+                    'Content-Type': 'application/json',
+                })
+                .then(response => {
+                    commit('setLoggedUser', response.data)
+                })
+                .catch(error => {
+                    commit('setLoginErrorMessage', error.response.data.message);
+                });
         }
     }
 };

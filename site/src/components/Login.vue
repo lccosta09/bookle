@@ -1,10 +1,10 @@
 <template>
     <div>
         <FlashMessage
-            :visible="loginError"
+            :visible="loginErrorMessage"
             :type="'danger'"
-            v-on:close="() => this.loginError = ''">
-            {{ loginError }}
+            v-on:close="() => this.loginErrorMessage = ''">
+            {{ loginErrorMessage }}
         </FlashMessage>
 
         <div class="page-header" id="banner">
@@ -45,27 +45,25 @@ export default {
         return {
             email: '',
             password: '',
-            loginError: ''
+            loginErrorMessage: ''
         }
     },
     methods: {
         async onSubmit(event) {
             event.preventDefault();
 
-            const login = await this.$store.dispatch({
+            await this.$store.dispatch({
                 type: 'user/login',
-                user: {
-                    email: this.email,
-                    password: this.password
-                }
+                email: this.email,
+                password: this.password
             });
 
-            if (login) {
+            if (this.$store.state.user.loggedUser.email) {
                 this.$router.push('doctors');
                 return;
             }
 
-            this.loginError = 'Usuário e/ou senha inválidos tente novamente';
+            this.loginErrorMessage = this.$store.state.user.loginErrorMessage;
         }
     }
 }
