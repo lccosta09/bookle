@@ -2,8 +2,7 @@
     <div>
         <FlashMessage
             :visible="this.bookingError"
-            :type="'danger'"
-            v-on:close="() => $emit('clear-booking-error')">
+            :type="'danger'">
             {{ bookingError }}
         </FlashMessage>
 

@@ -4,8 +4,7 @@
         <div v-if="!loading">
             <FlashMessage
                 :visible="loginErrorMessage"
-                :type="'danger'"
-                v-on:close="() => this.loginErrorMessage = ''">
+                :type="'danger'">
                 {{ loginErrorMessage }}
             </FlashMessage>
 

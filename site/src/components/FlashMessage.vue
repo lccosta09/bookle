@@ -1,5 +1,5 @@
 <template>
-    <div v-if="visible" class="alert alert-dismissible" :class="`alert-${type}`">
+    <div v-if="isVisible" class="alert alert-dismissible" :class="`alert-${type}`">
         <slot></slot>
     </div>
 </template>
@@ -24,12 +24,17 @@ export default {
             }
         }
     },
+    data() {
+        return {
+            isVisible: Boolean(this.visible)
+        }
+    },
     watch: {
         visible: {
             immediate: true,
             handler(newValue, oldValue) {
                 if (newValue !== oldValue && newValue) {
-                    setTimeout(() => this.$emit('close'), this.timeout);
+                    setTimeout(() => this.isVisible = false, this.timeout);
                 }
             }
         }

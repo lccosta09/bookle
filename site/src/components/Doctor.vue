@@ -20,8 +20,7 @@
             :date="date"
             :schedule="dateSchedule"
             :bookingError="bookingError"
-            v-on:book="$emit('book', $event)"
-            v-on:clear-booking-error="$emit('clear-booking-error')" />
+            v-on:book="$emit('book', $event)" />
         <BookedMessage
             v-if="page === pages.BOOKED_MESSAGE"
             :date="date"

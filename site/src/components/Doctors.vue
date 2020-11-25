@@ -34,8 +34,7 @@
                 v-on:open-schedule="onOpenSchedule"
                 v-on:set-date="onSetDate"
                 v-on:previous-page="onPreviosPage"
-                v-on:book="onBook"
-                v-on:clear-booking-error="() => this.bookingError = ''" />
+                v-on:book="onBook" />
         </Modal>
     </div>
 </template>
