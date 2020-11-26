@@ -9,9 +9,9 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="interval" class="col-sm-2 col-form-label">Horário</label>
+                <label for="schedule" class="col-sm-2 col-form-label">Horário</label>
                 <div class="col-sm-10">
-                    <div class="form-control-plaintext" id="interval">{{ interval.start }}h as {{ interval.end }}h</div>
+                    <div class="form-control-plaintext" id="schedule">{{ schedule.start }}h as {{ schedule.end }}h</div>
                 </div>
             </div>
         </fieldset>
@@ -25,7 +25,7 @@ export default {
     props: [
         'date',
         'doctor',
-        'interval'
+        'schedule'
     ],
     computed: {
         fullDate() {

@@ -29,7 +29,7 @@
                 :date="date"
                 :dateSchedule="doctorDateSchedule"
                 :monthSchedule="doctorMonthSchedule"
-                :bookedInterval="bookedInterval"
+                :bookedSchedule="bookedSchedule"
                 :bookingError="bookingError"
                 v-on:open-schedule="onOpenSchedule"
                 v-on:set-date="onSetDate"
@@ -71,7 +71,7 @@ export default {
             today: {},
             doctorMonthSchedule: {},
             doctorDateSchedule: [],
-            bookedInterval: {
+            bookedSchedule: {
                 start: '',
                 end: ''
             },
@@ -214,7 +214,7 @@ export default {
 
             return doctorSchedule;
         },
-        async onBook(interval) {
+        async onBook(schedule) {
             this.loadingModal = true;
 
             const userAppointments = await this.$store.dispatch({
@@ -231,13 +231,8 @@ export default {
 
             const added = await this.$store.dispatch({
                 type: 'appointment/add',
-                doctorId: this.doctor.id,
-                date: this.date,
-                interval: {
-                    start: interval.start,
-                    end: interval.end,
-                    userId: this.$store.state.user.loggedUser.id
-                }
+                userId: this.$store.state.user.loggedUser.id,
+                scheduleId: schedule.id
             });
 
             if (!added) {
@@ -248,7 +243,7 @@ export default {
 
             this.doctorDateSchedule = await this.getDoctorDateSchedule(this.date);
             this.doctorMonthSchedule = await this.getDoctorMonthSchedule(this.date);
-            this.bookedInterval = interval;
+            this.bookedSchedule = schedule;
             this.modalPage = this.modalPages.BOOKED_MESSAGE;
             this.loadingModal = false;
         }

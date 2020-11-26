@@ -25,14 +25,15 @@ $conditions[] = !empty($_GET['year']) ? "YEAR(starts_at) = {$_GET['year']}" : 'Y
 
 $conditions = implode(' AND ', $conditions);
 
-$sql = "SELECT doctors.id, schedules.starts_at, schedules.ends_at, schedules.appointments_limit
+$sql = "SELECT schedules.id, schedules.doctor_id, schedules.starts_at, schedules.ends_at, schedules.appointments_limit
     FROM schedules INNER JOIN doctors ON (schedules.doctor_id = doctors.id)
     WHERE $conditions";
 $data = $conn->query($sql);
 $response = [];
 foreach ($data as $schedule) {
     $time = strtotime(date('D M d Y 00:00:00 O', strtotime($schedule['starts_at']))) . '000';
-    $response[$schedule['id']][$time][] = [
+    $response[$schedule['doctor_id']][$time][] = [
+        'id' => $schedule['id'],
         'start' => date('H:i', strtotime($schedule['starts_at'])),
         'end' => date('H:i', strtotime($schedule['ends_at'])),
         'date' => date('Y-m-d', strtotime($schedule['starts_at'])),

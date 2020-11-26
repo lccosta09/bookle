@@ -8,7 +8,7 @@
 
         <h5 class="date">{{ fullDate }}</h5>
         <div class="intervals">
-            <div class="interval" v-for="(inteval, index) in schedule" :key="`inteval-${index}`">
+            <div class="interval" v-for="inteval in schedule" :key="inteval.id">
                 <div class="label">{{ inteval.start }} - {{ inteval.end }}</div>
                 <div class="select">
                     <button type="button" class="btn btn-primary btn-sm" v-on:click="$emit('book', inteval)">Agendar</button>

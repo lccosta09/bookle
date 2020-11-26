@@ -25,7 +25,7 @@
             v-if="page === pages.BOOKED_MESSAGE"
             :date="date"
             :doctor="doctor"
-            :interval="bookedInterval" />
+            :schedule="bookedSchedule" />
     </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
         'date',
         'dateSchedule',
         'monthSchedule',
-        'bookedInterval',
+        'bookedSchedule',
         'bookingError'
     ],
     components: {

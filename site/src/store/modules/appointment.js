@@ -77,9 +77,9 @@ const appointment = {
         async add({state}, payload) {
             const date = new Date(payload.date.year, payload.date.month, payload.date.day);
             const time = date.getTime();
-            state.appointments[payload.doctorId] = state.appointments[payload.doctorId] ?? {};
-            state.appointments[payload.doctorId][time] = state.appointments[payload.doctorId][time] ?? [];
-            state.appointments[payload.doctorId][time].push(payload.interval);
+            state.appointments[payload.scheduleId] = state.appointments[payload.scheduleId] ?? {};
+            state.appointments[payload.scheduleId][time] = state.appointments[payload.scheduleId][time] ?? [];
+            state.appointments[payload.scheduleId][time].push(payload.interval);
             return true;
         }
     }
