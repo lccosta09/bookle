@@ -27,7 +27,10 @@ $conditions = implode(' AND ', $conditions);
 
 $sql = "SELECT schedules.id, schedules.doctor_id, schedules.starts_at, schedules.ends_at, schedules.appointments_limit
     FROM schedules INNER JOIN doctors ON (schedules.doctor_id = doctors.id)
-    WHERE $conditions";
+    LEFT JOIN appointments ON (schedules.id = appointments.schedule_id)
+    WHERE $conditions
+    GROUP BY schedules.id
+    HAVING COUNT(appointments.id) < schedules.appointments_limit";
 $data = $conn->query($sql);
 $response = [];
 foreach ($data as $schedule) {

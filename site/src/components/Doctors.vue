@@ -163,31 +163,7 @@ export default {
                 date
             });
 
-            let schedule = JSON.parse(JSON.stringify(this.$store.state.schedule.schedules));
-
-            const appointments = await this.$store.dispatch({
-                type: 'appointment/getByDoctorAndMonth',
-                doctorId: this.doctor.id,
-                date
-            });
-
-            Object.entries(schedule).forEach(([timestamp,]) => {
-                const doctorSchedule = schedule[timestamp].filter((scheduleInterval) => {
-                    if (!appointments[timestamp]) {
-                        return true;
-                    }
-
-                    const scheduleAppointments = appointments[timestamp].filter((appointmentInterval) => {
-                        return scheduleInterval.start === appointmentInterval.start && scheduleInterval.end === appointmentInterval.end;
-                    });
-
-                    return scheduleAppointments.length < scheduleInterval.appointmentsLimit;
-                });
-
-                schedule[timestamp] = doctorSchedule;
-            });
-
-            return schedule;
+            return this.$store.state.schedule.schedules;
         },
         async getDoctorDateSchedule(date) {
             await this.$store.dispatch({
@@ -196,23 +172,7 @@ export default {
                 date
             });
 
-            const schedule = JSON.parse(JSON.stringify(this.$store.state.schedule.schedules));
-
-            const appointments = await this.$store.dispatch({
-                type: 'appointment/getByDoctorAndDate',
-                doctorId: this.doctor.id,
-                date
-            });
-
-            let doctorSchedule = schedule.filter((scheduleInterval) => {
-                const scheduleAppointments = appointments.filter((appointmentInterval) => {
-                    return scheduleInterval.start === appointmentInterval.start && scheduleInterval.end === appointmentInterval.end;
-                });
-
-                return scheduleAppointments.length < scheduleInterval.appointmentsLimit;
-            });
-
-            return doctorSchedule;
+            return this.$store.state.schedule.schedules;
         },
         async onBook(schedule) {
             this.loadingModal = true;
