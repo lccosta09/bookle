@@ -1,11 +1,24 @@
+import axios from 'axios';
+
 const appointment = {
     namespaced: true,
     state() {
         return {
-            appointments: {}
+            appointments: {},
+            lastAppointment: {
+                scheduleId: 0,
+                userId: 0
+            },
+            appointmentErrorMessage: ''
         }
     },
     mutations: {
+        setLastAppointment(state, payload) {
+            state.lastAppointment = payload;
+        },
+        setAppointmentErrorMessage(state, payload) {
+            state.appointmentErrorMessage = payload;
+        }
     },
     actions: {
         async getByDoctorAndDate({state}, payload) {
@@ -74,13 +87,22 @@ const appointment = {
 
             return userAppointments;
         },
-        async add({state}, payload) {
-            const date = new Date(payload.date.year, payload.date.month, payload.date.day);
-            const time = date.getTime();
-            state.appointments[payload.scheduleId] = state.appointments[payload.scheduleId] ?? {};
-            state.appointments[payload.scheduleId][time] = state.appointments[payload.scheduleId][time] ?? [];
-            state.appointments[payload.scheduleId][time].push(payload.interval);
-            return true;
+        async book({commit}, payload) {
+            await axios.post('http://bookle-api.docker:1212/book.php', {
+                    scheduleId: payload.scheduleId,
+                    userId: payload.userId
+                })
+                .then(response => {
+                    commit('setLastAppointment', response.data);
+                    commit('setAppointmentErrorMessage', '');
+                })
+                .catch(error => {
+                    commit('setLastAppointment', {
+                        scheduleId: 0,
+                        userId: 0
+                    });
+                    commit('setAppointmentErrorMessage', error.response.data.message);
+                });
         }
     }
 };

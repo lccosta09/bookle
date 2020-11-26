@@ -25,14 +25,16 @@ const user = {
             await axios.post('http://bookle-api.docker:1212/login.php', {
                     email: payload.email,
                     password: payload.password
-                }, {
-                    'Content-Type': 'application/json',
                 })
                 .then(response => {
                     commit('setLoggedUser', response.data);
                     commit('setLoginErrorMessage', '');
                 })
                 .catch(error => {
+                    commit('setLoggedUser', {
+                        email: '',
+                        password: ''
+                    });
                     commit('setLoginErrorMessage', error.response.data.message);
                 });
         }

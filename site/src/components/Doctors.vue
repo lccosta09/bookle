@@ -217,26 +217,14 @@ export default {
         async onBook(schedule) {
             this.loadingModal = true;
 
-            const userAppointments = await this.$store.dispatch({
-                type: 'appointment/getByUserAndDoctor',
-                doctorId: this.doctor.id,
-                userId: this.$store.state.user.loggedUser.id
-            });
-
-            if (userAppointments.length) {
-                this.bookingError = 'Você já possui uma consulta agendada com este médico';
-                this.loadingModal = false;
-                return;
-            }
-
-            const added = await this.$store.dispatch({
-                type: 'appointment/add',
+            await this.$store.dispatch({
+                type: 'appointment/book',
                 userId: this.$store.state.user.loggedUser.id,
                 scheduleId: schedule.id
             });
 
-            if (!added) {
-                this.bookingError = 'Não foi possível realizar o agendamento tente novamente mais tarde';
+            if (!this.$store.state.appointment.lastAppointment.userId) {
+                this.bookingError = this.$store.state.appointment.appointmentErrorMessage;
                 this.loadingModal = false;
                 return;
             }
