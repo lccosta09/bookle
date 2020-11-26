@@ -67,7 +67,8 @@ $sql = "SELECT COUNT(appointments.id) AS booked_appointments
         FROM appointments
         INNER JOIN schedules ON (appointments.schedule_id = schedules.id)
         WHERE schedules.starts_at >= '{$schedule['starts_at']}'
-        AND schedules.ends_at <= '{$schedule['ends_at']}'";
+        AND schedules.ends_at <= '{$schedule['ends_at']}'
+        AND appointments.user_id = {$input['userId']}";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 $appointments = $stmt->fetch();
