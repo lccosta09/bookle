@@ -14,6 +14,8 @@ header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
 header('Content-Type: application/json');
 date_default_timezone_set('America/Sao_Paulo');
 
+require_once 'jwt.php';
+
 $dbh = new PDO('mysql:host=bookle-mysql.docker;dbname=bookle', 'root', 'bookle');
 
 $input = json_decode(file_get_contents('php://input'), true);
@@ -43,8 +45,20 @@ if (md5($input['password']) != $user['user_password']) {
     exit();    
 }
 
+$jwt = new JWT();
+$token = $jwt->encode(['sub' => $user['email']], strtotime('+15 minutes'));
+$refreshTokenExpiration = strtotime('+30 days');
+$refreshToken = $jwt->getRefreshToken(['sub' => $user['email']], $refreshTokenExpiration);
+
+setcookie('refreshToken', $refreshToken, [
+    'expires' => $refreshTokenExpiration,
+    'httponly' => true,
+    'SameSite' => 'None',
+]);
+
 echo json_encode(array(
     'id' =>  $user['id'],
     'name' =>  $user['name'],
-    'email' =>  $user['email']
+    'email' =>  $user['email'],
+    'token' => $token
 ));
