@@ -1,10 +1,12 @@
 <?php
 
-class JWT {
+class JWT
+{
 
     private $secret = 'SantaMaria12';
 
-    public function encode($payload, $expiresAt) {
+    public function encode($payload, $expiresAt)
+    {
         $header = [
            'alg' => 'HS256',
            'typ' => 'JWT'
@@ -24,7 +26,8 @@ class JWT {
         return "$header.$payload.$signature";
     }
 
-    public function decode($token) {
+    public function decode($token)
+    {
         $part = explode('.', $token);
         if (count($part) !== 3) {
             return false;
