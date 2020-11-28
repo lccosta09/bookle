@@ -40,11 +40,10 @@ if (md5($input['password']) != $user['user_password']) {
 
 $jwt = new JWT();
 $auth = new Auth($jwt);
-$token = $auth->getToken($user['id']);
 
 echo json_encode(array(
     'id' =>  $user['id'],
     'name' =>  $user['name'],
     'email' =>  $user['email'],
-    'token' => $token
+    'token' => $auth->login($user['id'])
 ));

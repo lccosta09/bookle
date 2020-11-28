@@ -16,7 +16,7 @@ class Auth
         $this->jwt = $jwt;
     }
 
-    public function getToken($userId)
+    public function login($userId)
     {
         $token = $this->jwt->encode(['sub' => $userId], strtotime('+15 minutes'), $this->tokenSecret);
 
@@ -59,7 +59,24 @@ class Auth
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute([$auth['id']]);
 
-        return $this->getToken($auth['user_id']);
+        return $this->login($auth['user_id']);
+    }
+
+    public function logout()
+    {
+        $refreshToken = $this->getRefreshTokenFromCookie();
+
+        if (empty($refreshToken)) {
+            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
+            return;
+        }
+
+        $refreshToken = addslashes($refreshToken);
+        $sql = "DELETE FROM auth WHERE refresh_token = ?";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([$refreshToken]);
+
+        setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
     }
 
     public function validate()
