@@ -3,6 +3,8 @@ require_once 'cors.php';
 $cors = new Cors();
 $cors->setHeaders();
 
+header('Content-Type: application/json');
+
 date_default_timezone_set('America/Sao_Paulo');
 
 $conn = new PDO('mysql:host=bookle-mysql.docker;dbname=bookle', 'root', 'bookle');
