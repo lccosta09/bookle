@@ -39,9 +39,13 @@ if (md5($input['password']) != $user['user_password']) {
 }
 
 $jwt = new JWT();
-$token = $jwt->encode(['sub' => $user['email']], strtotime('+15 minutes'));
+$token = $jwt->encode(['sub' => $user['id']], strtotime('+15 minutes'));
 $refreshTokenExpiration = strtotime('+30 days');
-$refreshToken = $jwt->getRefreshToken(['sub' => $user['email']], $refreshTokenExpiration);
+$refreshToken = $jwt->getRefreshToken(['sub' => $user['id']], $refreshTokenExpiration);
+
+$sql = "INSERT INTO auth (token, refresh_token, user_id, expires_at) VALUES (?, ?, ?, ?)";
+$stmt= $dbh->prepare($sql);
+$stmt->execute([$token, $refreshToken, $user['id'], date('Y-m-d H:i:s')]);
 
 setcookie('refreshToken', $refreshToken, $refreshTokenExpiration, null, null, false, true);
 
