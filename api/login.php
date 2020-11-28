@@ -1,9 +1,8 @@
 <?php
 require_once 'cors.php';
+
 $cors = new Cors();
 $cors->setHeaders();
-
-header('Content-Type: application/json');
 
 date_default_timezone_set('America/Sao_Paulo');
 

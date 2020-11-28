@@ -3,10 +3,14 @@
 class JWT
 {
 
-    private $secret = 'SantaMaria12';
+    private $jwtSecret = 'SantaMaria12';
 
-    public function encode($payload, $expiresAt)
+    private $refreshTokenSecret = 'MaeDeDeus';
+
+    public function encode($payload, $expiresAt, $secret = null)
     {
+        $secret = $secret ?? $this->jwtSecret;
+
         $header = [
            'alg' => 'HS256',
            'typ' => 'JWT'
@@ -20,14 +24,16 @@ class JWT
         $payload = json_encode($payload);
         $payload = base64_encode($payload);
 
-        $signature = hash_hmac('sha256', "$header.$payload", $this->secret, true);
+        $signature = hash_hmac('sha256', "$header.$payload", $secret, true);
         $signature = base64_encode($signature);
 
         return "$header.$payload.$signature";
     }
 
-    public function decode($token)
+    public function isValid($token, $secret = null)
     {
+        $secret = $secret ?? $this->jwtSecret;
+
         $part = explode('.', $token);
         if (count($part) !== 3) {
             return false;
@@ -37,20 +43,20 @@ class JWT
         $payload = $part[1];
         $signature = $part[2];
 
-        $decodePayload = json_decode(base64_decode($payload));
+        $decodePayload = json_decode(base64_decode($payload), true);
         if (!is_array($decodePayload) || !isset($decodePayload['exp'])) {
             return false;
         }
 
-        $valid = hash_hmac('sha256', "$header.$payload", $this->secret, true);
+        $valid = hash_hmac('sha256', "$header.$payload", $secret, true);
         $valid = base64_encode($valid);
 
-        return $signature == $valid && $decodePayload['exp'];
+        return $signature == $valid && $decodePayload['exp'] >= time();
     }
 
     public function getRefreshToken($payload, $expiresAt) {
         $bytes = random_bytes(20);
         $payload['uuid'] = bin2hex($bytes);
-        return $this->encode($payload, $expiresAt);
+        return $this->encode($payload, $expiresAt, $this->refreshTokenSecret);
     }
 }

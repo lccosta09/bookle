@@ -23,6 +23,7 @@ class Cors
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header('Content-Type: application/json');
     }
 
     private function getAllowedOrigin()

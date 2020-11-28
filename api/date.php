@@ -1,5 +1,6 @@
 <?php
 require_once 'cors.php';
+
 $cors = new Cors();
 $cors->setHeaders();
 
