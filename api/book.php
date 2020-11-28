@@ -1,16 +1,16 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: http://localhost:1414');
+    header('Access-Control-Allow-Credentials: true');
     header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
-    header('Access-Control-Allow-Headers: Content-Type');
-    header('Access-Control-Max-Age: 1728000');
-    header('Content-Length: 0');
-    header('Content-Type: text/plain');
+    header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');
     die();
 }
 
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
+header('Access-Control-Allow-Origin: http://localhost:1414');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header('Content-Type: application/json');
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -28,7 +28,7 @@ if (empty($schedule)) {
     echo json_encode(array(
         'message' => 'Horário indisponível'
     ));
-    exit();
+    die();
 }
 
 $sql = "SELECT COUNT(appointments.id) AS booked_appointments
@@ -45,7 +45,7 @@ if ($appointments['booked_appointments'] > 0) {
     echo json_encode(array(
         'message' => 'Você já possui uma consulta marcada com este médico'
     ));
-    exit();
+    die();
 }
 
 $sql = "SELECT COUNT(appointments.id) AS booked_appointments, schedules.appointments_limit
@@ -60,7 +60,7 @@ if ($appointments['booked_appointments'] == $appointments['appointments_limit'])
     echo json_encode(array(
         'message' => 'Horário indisponível'
     ));
-    exit();
+    die();
 }
 
 $sql = "SELECT COUNT(appointments.id) AS booked_appointments
@@ -77,7 +77,7 @@ if ($appointments['booked_appointments'] > 0) {
     echo json_encode(array(
         'message' => 'Você já possui uma consulta marcada neste horário'
     ));
-    exit();
+    die();
 }
 
 try {
@@ -89,7 +89,7 @@ try {
     echo json_encode(array(
         'message' => 'Não foi possível agendar sua consulta, tente novamente mais tarde'
     ));
-    exit();
+    die();
 }
 
 echo json_encode($input);

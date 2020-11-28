@@ -1,14 +1,17 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: http://localhost:1414');
+    header('Access-Control-Allow-Credentials: true');
     header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
-    header('Access-Control-Allow-Headers: Content-Type');
+    header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');
     die();
 }
 
-header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Methods: PUT, POST, GET, OPTIONS, DELETE");
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Origin: http://localhost:1414');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept');
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header('Content-Type: application/json');
 header('Content-Type: application/json');
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -32,7 +35,7 @@ if (empty($user)) {
     echo json_encode(array(
         'message' => 'Usuário e/ou senha inválidos tente novamente'
     ));
-    exit();
+    die();
 }
 
 if (md5($input['password']) != $user['user_password']) {
@@ -40,7 +43,7 @@ if (md5($input['password']) != $user['user_password']) {
     echo json_encode(array(
         'message' => 'Usuário e/ou senha inválidos tente novamente'
     ));
-    exit();    
+    die();
 }
 
 $jwt = new JWT();
@@ -48,11 +51,7 @@ $token = $jwt->encode(['sub' => $user['email']], strtotime('+15 minutes'));
 $refreshTokenExpiration = strtotime('+30 days');
 $refreshToken = $jwt->getRefreshToken(['sub' => $user['email']], $refreshTokenExpiration);
 
-setcookie('refreshToken', $refreshToken, [
-    'expires' => $refreshTokenExpiration,
-    'httponly' => true,
-    'SameSite' => 'None',
-]);
+setcookie('refreshToken', $refreshToken, $refreshTokenExpiration, null, null, false, true);
 
 echo json_encode(array(
     'id' =>  $user['id'],

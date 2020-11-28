@@ -23,7 +23,6 @@ $sql = "SELECT doctors.id, users.name, doctors.description, addresses.address, a
 $data = $conn->query($sql);
 $response = [];
 foreach ($data as $doctor) {
-    $doctor['headers'] = getallheaders();
     $response[] = $doctor;
 }
 echo json_encode($response);
