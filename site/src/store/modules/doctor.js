@@ -19,9 +19,13 @@ const doctor = {
         add(context, payload) {
             context.commit('add', payload);
         },
-        async getAll({commit}) {
+        async getAll({commit, rootState}) {
             axios.defaults.withCredentials = true;
-            await axios.get('http://bookle-api.docker:1212/doctors.php')
+            await axios.get('http://bookle-api.docker:1212/doctors.php', {
+                    headers: {
+                        'Authorization': `${'Bearer'} ${rootState.user.loggedUser.token}`
+                    }
+                })
                 .then(response => {
                     commit('setDoctors', response.data)
                 });

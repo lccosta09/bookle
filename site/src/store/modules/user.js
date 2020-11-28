@@ -7,14 +7,17 @@ const user = {
             users: [],
             loggedUser: {
                 email: '',
-                password: ''
+                token: ''
             },
             loginErrorMessage: ''
         }
     },
     mutations: {
         setLoggedUser(state, payload) {
-            state.loggedUser = payload;
+            state.loggedUser = {
+                email: payload.email,
+                token: payload.token
+            };
         },
         setLoginErrorMessage(state, payload) {
             state.loginErrorMessage = payload;
