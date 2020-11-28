@@ -97,7 +97,7 @@ class Auth
     private function getRefreshTokenFromCookie()
     {
         if (!empty($_COOKIE['refreshToken'])) {
-            return $this->jwt->isValid($_COOKIE['refreshToken']) ? $_COOKIE['refreshToken'] : null;
+            return $this->jwt->isValid($_COOKIE['refreshToken'], $this->refreshTokenSecret) ? $_COOKIE['refreshToken'] : null;
         }
 
         $refreshToken = $this->getServerEntryValue('HTTP_COOKIE');

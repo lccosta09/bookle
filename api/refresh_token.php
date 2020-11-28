@@ -7,4 +7,9 @@ $cors->setHeaders();
 require_once 'jwt.php';
 require_once 'auth.php';
 
-$auth->refreshToken();
+$jwt = new JWT();
+$auth = new Auth($jwt);
+
+echo json_encode(array(
+    'token' => $auth->refreshToken()
+));

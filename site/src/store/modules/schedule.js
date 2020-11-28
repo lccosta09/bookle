@@ -32,7 +32,7 @@ const schedule = {
                 })
                 .then(response => {
                     commit('setSchedule', response.data)
-                });
+                })
         },
         async getByDoctorAndMonth({commit, rootState}, payload) {
             let month = payload.date.month + 1;
@@ -51,6 +51,18 @@ const schedule = {
                 })
                 .then(response => {
                     commit('setSchedule', response.data)
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        axios.get('http://bookle-api.docker:1212/refresh_token.php', {
+                                headers: {
+                                    'Authorization': `${'Bearer'} ${rootState.user.loggedUser.token}`
+                                }
+                            })
+                            .then(response => {
+                                console.log(response.data);
+                            });
+                    }
                 });
         }
     }
