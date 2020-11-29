@@ -31,12 +31,8 @@ const doctor = {
                 })
                 .catch(async error => {
                     if (error.response.status === 401) {
-                        await dispatch('user/refreshToken', {
-                                originalAction: 'doctor/getAll',
-                                originalPayload: {
-                                    type: 'doctor/getAll'
-                                }
-                            }, {root: true});
+                        await dispatch('user/refreshToken', {}, {root: true});
+                        await dispatch('doctor/getAll', {}, {root: true});
                     }
                 });
         }

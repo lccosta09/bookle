@@ -35,10 +35,8 @@ const schedule = {
                 })
                 .catch(async error => {
                     if (error.response.status === 401) {
-                        await dispatch('user/refreshToken', {
-                                originalAction: 'schedule/getByDoctorAndDate',
-                                originalPayload: payload
-                            }, {root: true});
+                        await dispatch('user/refreshToken', {}, {root: true});
+                        await dispatch('schedule/getByDoctorAndDate', {}, {root: true});
                     }
                 });
         },
@@ -62,10 +60,8 @@ const schedule = {
                 })
                 .catch(async error => {
                     if (error.response.status === 401) {
-                        await dispatch('user/refreshToken', {
-                                originalAction: 'schedule/getByDoctorAndMonth',
-                                originalPayload: payload
-                            }, {root: true});
+                        await dispatch('user/refreshToken', {}, {root: true});
+                        await dispatch('schedule/getByDoctorAndMonth', payload, {root: true});
                     }
                 });
         }

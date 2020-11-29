@@ -11,8 +11,13 @@ createApp(App)
     .use(store)
     .mount('#app');
 
-router.beforeEach((to, from, next) => {
-    if (!store.state.user.loggedUser.email && to.name !== 'login') {
+router.beforeEach(async (to, from, next) => {
+    if (!store.state.user.loggedUser.token && to.name !== 'login') {
+        await store.dispatch('user/refreshToken', {}, {root: true});
+        if (store.state.user.loggedUser.token) {
+            next();
+        }
+
         next({
             path: 'login'
         });
