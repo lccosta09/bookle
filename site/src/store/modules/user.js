@@ -23,6 +23,9 @@ const user = {
         },
         setLoginErrorMessage(state, payload) {
             state.loginErrorMessage = payload;
+        },
+        refreshToken(state, payload) {
+            state.loggedUser.token = payload;
         }
     },
     actions: {
@@ -42,6 +45,17 @@ const user = {
                         password: ''
                     });
                     commit('setLoginErrorMessage', error.response.data.message);
+                });
+        },
+        async refreshToken({commit, state}) {
+            axios.defaults.withCredentials = true;
+            await axios.get('http://bookle-api.docker:1212/refresh_token.php', {
+                    headers: {
+                        'Authorization': `${'Bearer'} ${state.loggedUser.token}`
+                    }
+                })
+                .then(response => {
+                    commit('refreshToken', response.data.token);
                 });
         }
     }
