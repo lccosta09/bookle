@@ -13,7 +13,7 @@ const schedule = {
         }
     },
     actions: {
-        async getByDoctorAndDate({commit, rootState}, payload) {
+        async getByDoctorAndDate({commit, rootState, dispatch}, payload) {
             let month = payload.date.month + 1;
             const day = payload.date.day.toString().length < 2 ? '0'.repeat(2 - payload.date.day.toString().length) + payload.date.day : payload.date.day.toString();
             month = month.toString().length < 2 ? '0'.repeat(2 - month.toString().length) + month : month.toString();
@@ -33,6 +33,14 @@ const schedule = {
                 .then(response => {
                     commit('setSchedule', response.data)
                 })
+                .catch(async error => {
+                    if (error.response.status === 401) {
+                        await dispatch('user/refreshToken', {
+                                originalAction: 'schedule/getByDoctorAndDate',
+                                originalPayload: payload
+                            }, {root: true});
+                    }
+                });
         },
         async getByDoctorAndMonth({commit, rootState, dispatch}, payload) {
             let month = payload.date.month + 1;
@@ -52,9 +60,12 @@ const schedule = {
                 .then(response => {
                     commit('setSchedule', response.data)
                 })
-                .catch(error => {
+                .catch(async error => {
                     if (error.response.status === 401) {
-                        dispatch({type: 'user/refreshToken'}, {root: true});
+                        await dispatch('user/refreshToken', {
+                                originalAction: 'schedule/getByDoctorAndMonth',
+                                originalPayload: payload
+                            }, {root: true});
                     }
                 });
         }

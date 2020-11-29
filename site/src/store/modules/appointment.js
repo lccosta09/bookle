@@ -21,7 +21,7 @@ const appointment = {
         }
     },
     actions: {
-        async book({commit, rootState}, payload) {
+        async book({commit, rootState, dispatch}, payload) {
             await axios.post('http://bookle-api.docker:1212/book.php', {
                     scheduleId: payload.scheduleId,
                     userId: payload.userId
@@ -35,7 +35,14 @@ const appointment = {
                     commit('setLastAppointment', response.data);
                     commit('setAppointmentErrorMessage', '');
                 })
-                .catch(error => {
+                .catch(async error => {
+                    if (error.response.status === 401) {
+                        await dispatch('user/refreshToken', {
+                                originalAction: 'appointment/book',
+                                originalPayload: payload
+                            }, {root: true});
+                    }
+
                     commit('setLastAppointment', {
                         scheduleId: 0,
                         userId: 0

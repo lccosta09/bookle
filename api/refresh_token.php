@@ -9,7 +9,16 @@ require_once 'auth.php';
 
 $jwt = new JWT();
 $auth = new Auth($jwt);
+$token = $auth->refreshToken();
+
+if (empty($token)) {
+    header("HTTP/1.0 401 Not Found");
+    echo json_encode(array(
+        'message' => 'Usuário não autenticado'
+    ));
+    die();
+}
 
 echo json_encode(array(
-    'token' => $auth->refreshToken()
+    'token' => $token
 ));

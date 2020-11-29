@@ -47,15 +47,21 @@ const user = {
                     commit('setLoginErrorMessage', error.response.data.message);
                 });
         },
-        async refreshToken({commit, state}) {
+        async refreshToken({commit, state, dispatch}, payload) {
             axios.defaults.withCredentials = true;
             await axios.get('http://bookle-api.docker:1212/refresh_token.php', {
                     headers: {
                         'Authorization': `${'Bearer'} ${state.loggedUser.token}`
                     }
                 })
-                .then(response => {
+                .then(async response => {
                     commit('refreshToken', response.data.token);
+                    await dispatch(payload.originalAction, payload.originalPayload, {root: true});
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        commit('refreshToken', '');
+                    }
                 });
         }
     }

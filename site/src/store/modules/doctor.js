@@ -19,7 +19,7 @@ const doctor = {
         add(context, payload) {
             context.commit('add', payload);
         },
-        async getAll({commit, rootState}) {
+        async getAll({commit, rootState, dispatch}) {
             axios.defaults.withCredentials = true;
             await axios.get('http://bookle-api.docker:1212/doctors.php', {
                     headers: {
@@ -28,6 +28,16 @@ const doctor = {
                 })
                 .then(response => {
                     commit('setDoctors', response.data)
+                })
+                .catch(async error => {
+                    if (error.response.status === 401) {
+                        await dispatch('user/refreshToken', {
+                                originalAction: 'doctor/getAll',
+                                originalPayload: {
+                                    type: 'doctor/getAll'
+                                }
+                            }, {root: true});
+                    }
                 });
         }
     }

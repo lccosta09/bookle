@@ -81,9 +81,7 @@ export default {
     async mounted() {
         this.loadingDoctors = true;
 
-        await this.$store.dispatch({
-            type: 'date/getTime'
-        });
+        await this.$store.dispatch('date/getTime');
 
         const date = new Date(this.$store.state.date.time);
         this.today = {
@@ -94,9 +92,7 @@ export default {
 
         this.date = {...this.today};
 
-        await this.$store.dispatch({
-            type: 'doctor/getAll'
-        });
+        await this.$store.dispatch('doctor/getAll');
 
         this.loadingDoctors = false;
     },
@@ -157,8 +153,7 @@ export default {
             this.loadingModal = false;
         },
         async getDoctorMonthSchedule(date) {
-            await this.$store.dispatch({
-                type: 'schedule/getByDoctorAndMonth',
+            await this.$store.dispatch('schedule/getByDoctorAndMonth', {
                 doctorId: this.doctor.id,
                 date
             });
@@ -166,8 +161,7 @@ export default {
             return this.$store.state.schedule.schedules;
         },
         async getDoctorDateSchedule(date) {
-            await this.$store.dispatch({
-                type: 'schedule/getByDoctorAndDate',
+            await this.$store.dispatch('schedule/getByDoctorAndDate', {
                 doctorId: this.doctor.id,
                 date
             });
@@ -177,8 +171,7 @@ export default {
         async onBook(schedule) {
             this.loadingModal = true;
 
-            await this.$store.dispatch({
-                type: 'appointment/book',
+            await this.$store.dispatch('appointment/book', {
                 userId: this.$store.state.user.loggedUser.id,
                 scheduleId: schedule.id
             });

@@ -18,9 +18,9 @@ class Auth
 
     public function login($userId)
     {
-        $token = $this->jwt->encode(['sub' => $userId], strtotime('+15 minutes'), $this->tokenSecret);
+        $token = $this->jwt->encode(['sub' => $userId], strtotime('+10 seconds'), $this->tokenSecret);
 
-        $refreshTokenExpiration = strtotime('+30 minutes');
+        $refreshTokenExpiration = strtotime('+30 days');
         $refreshToken = $this->jwt->encode(['sub' => $userId], $refreshTokenExpiration, $this->refreshTokenSecret);
 
         $sql = "INSERT INTO auth (token, refresh_token, user_id, expires_at) VALUES (?, ?, ?, ?)";

@@ -59,8 +59,7 @@ export default {
 
             event.preventDefault();
 
-            await this.$store.dispatch({
-                type: 'user/login',
+            await this.$store.dispatch('user/login', {
                 email: this.email,
                 password: this.password
             });
