@@ -26,18 +26,27 @@ class JWT
         return "$header.$payload.$signature";
     }
 
-    public function isValid($token, $secret)
+    public function decode($token, $secret)
     {
-        $part = explode('.', $token);
-        if (count($part) !== 3) {
-            return false;
+        $parts = explode('.', $token);
+        if (count($parts) !== 3) {
+            return [];
         }
 
-        $header = $part[0];
-        $payload = $part[1];
-        $signature = $part[2];
+        list($header, $payload, $signature) = $parts;
+        return json_decode(base64_decode($payload), true);
+    }
 
+    public function isValid($token, $secret)
+    {
+        $parts = explode('.', $token);
+        if (count($parts) !== 3) {
+            return [];
+        }
+
+        list($header, $payload, $signature) = $parts;
         $decodePayload = json_decode(base64_decode($payload), true);
+
         if (!is_array($decodePayload) || !isset($decodePayload['exp'])) {
             return false;
         }

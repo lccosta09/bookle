@@ -85,6 +85,11 @@ class Auth
         return !empty($token);
     }
 
+    public function decodeToken($token)
+    {
+        return $this->jwt->decode($token, $this->tokenSecret);
+    }
+
     private function getTokenFromHeader()
     {
         $token = $this->getHeaderValue('Authorization');

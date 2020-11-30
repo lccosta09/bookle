@@ -39,6 +39,7 @@ const appointment = {
                     if (error.response.status === 401) {
                         await dispatch('user/refreshToken', {}, {root: true});
                         await dispatch('appointment/book', payload, {root: true});
+                        return;
                     }
 
                     commit('setLastAppointment', {

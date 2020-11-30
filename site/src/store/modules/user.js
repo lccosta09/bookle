@@ -23,9 +23,6 @@ const user = {
         },
         setLoginErrorMessage(state, payload) {
             state.loginErrorMessage = payload;
-        },
-        refreshToken(state, payload) {
-            state.loggedUser.token = payload;
         }
     },
     actions: {
@@ -42,7 +39,8 @@ const user = {
                 .catch(error => {
                     commit('setLoggedUser', {
                         email: '',
-                        password: ''
+                        password: '',
+                        token: ''
                     });
                     commit('setLoginErrorMessage', error.response.data.message);
                 });
@@ -55,11 +53,17 @@ const user = {
                     }
                 })
                 .then(async response => {
-                    commit('refreshToken', response.data.token);
+                    console.log(response.data);
+                    commit('setLoggedUser', response.data);
                 })
                 .catch(error => {
                     if (error.response.status === 401) {
-                        commit('refreshToken', '');
+                        commit('setLoggedUser', {
+                            email: '',
+                            password: '',
+                            token: ''
+                        });
+                        commit('setLoginErrorMessage', error.response.data.message);
                     }
                 });
         }
