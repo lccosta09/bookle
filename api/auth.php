@@ -85,9 +85,25 @@ class Auth
         return !empty($token);
     }
 
-    public function decodeToken($token)
+    public function getUserFromRefreshToken()
     {
-        return $this->jwt->decode($token, $this->tokenSecret);
+        $refreshToken = $this->getRefreshTokenFromCookie();
+        if (empty($refreshToken)) {
+            return [];
+        }
+
+        $payload = $this->jwt->decode($refreshToken, $this->refreshTokenSecret);
+        if (empty($payload['sub'])) {
+            return [];
+        }
+
+        $sql = "SELECT users.id, users.email, users.name, users.user_password
+                FROM users
+                WHERE users.id = {$payload['sub']}
+                LIMIT 1";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     private function getTokenFromHeader()
