@@ -16,7 +16,92 @@ class Auth
         $this->jwt = $jwt;
     }
 
-    public function login($userId)
+    public function login($email, $password) {
+        $sql = "SELECT users.id, users.email, users.name, users.user_password
+                FROM users
+                WHERE users.email = '$email'
+                LIMIT 1";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+        $user = $stmt->fetch();
+
+        if (empty($user)) {
+            return [];
+        }
+
+        if (md5($password) != $user['user_password']) {
+            return [];
+        }
+
+        return [
+            'id' =>  $user['id'],
+            'name' =>  $user['name'],
+            'email' =>  $user['email'],
+            'token' => $this->getToken($user['id'])
+        ];
+    }
+
+    public function refreshToken()
+    {
+        $refreshToken = $this->getRefreshTokenFromCookie();
+
+        if (empty($refreshToken)) {
+            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
+            return [];
+        }
+
+        $refreshToken = addslashes($refreshToken);
+
+        $sql = "SELECT auth.id AS auth_id, users.id, users.email, users.name, users.user_password
+                FROM auth INNER JOIN users ON (auth.user_id = users.id)
+                AND refresh_token = '$refreshToken'
+                LIMIT 1";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+        $user = $stmt->fetch();
+
+        if (empty($user)) {
+            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
+            return [];
+        }
+
+        $sql = "DELETE FROM auth WHERE id = ?";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([$user['auth_id']]);
+
+        return [
+            'id' =>  $user['id'],
+            'name' =>  $user['name'],
+            'email' =>  $user['email'],
+            'token' => $this->getToken($user['id'])
+        ];
+    }
+
+    public function logout()
+    {
+        $refreshToken = $this->getRefreshTokenFromCookie();
+
+        if (empty($refreshToken)) {
+            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
+            return;
+        }
+
+        $refreshToken = addslashes($refreshToken);
+
+        $sql = "DELETE FROM auth WHERE refresh_token = ?";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([$refreshToken]);
+
+        setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
+    }
+
+    public function validate()
+    {
+        $token = $this->getTokenFromHeader();
+        return !empty($token);
+    }
+
+    private function getToken($userId)
     {
         $token = $this->jwt->encode(['sub' => $userId], strtotime('+10 seconds'), $this->tokenSecret);
 
@@ -32,100 +117,26 @@ class Auth
         return $token;
     }
 
-    public function refreshToken()
-    {
-        $refreshToken = $this->getRefreshTokenFromCookie();
-        if (empty($refreshToken)) {
-            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
-            return null;
-        }
-
-        $refreshToken = addslashes($refreshToken);
-
-        $sql = "SELECT id, user_id
-                FROM auth
-                WHERE refresh_token = '$refreshToken'
-                LIMIT 1";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute();
-        $auth = $stmt->fetch();
-
-        if (empty($auth)) {
-            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
-            return null;
-        }
-
-        $sql = "DELETE FROM auth WHERE id = ?";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute([$auth['id']]);
-
-        return $this->login($auth['user_id']);
-    }
-
-    public function logout()
-    {
-        $refreshToken = $this->getRefreshTokenFromCookie();
-
-        if (empty($refreshToken)) {
-            setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
-            return;
-        }
-
-        $refreshToken = addslashes($refreshToken);
-        $sql = "DELETE FROM auth WHERE refresh_token = ?";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute([$refreshToken]);
-
-        setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
-    }
-
-    public function validate()
-    {
-        $token = $this->getTokenFromHeader();
-        return !empty($token);
-    }
-
-    public function getUserFromRefreshToken()
-    {
-        $refreshToken = $this->getRefreshTokenFromCookie();
-        if (empty($refreshToken)) {
-            return [];
-        }
-
-        $payload = $this->jwt->decode($refreshToken, $this->refreshTokenSecret);
-        if (empty($payload['sub'])) {
-            return [];
-        }
-
-        $sql = "SELECT users.id, users.email, users.name, users.user_password
-                FROM users
-                WHERE users.id = {$payload['sub']}
-                LIMIT 1";
-        $stmt = $this->dbh->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch();
-    }
-
-    private function getTokenFromHeader()
+    private function getTokenFromHeader($validate = true)
     {
         $token = $this->getHeaderValue('Authorization');
         $token = $token ?? $this->getServerEntryValue('HTTP_AUTHORIZATION');
         $isBearerPrefixed = preg_match('/^(Bearer[\s]{1,})(.+)/', $token, $match);
         $token = $isBearerPrefixed ? $match[2] : null;
-        return $this->jwt->isValid($token, $this->tokenSecret) ? $token : null;
+        return !$validate || $this->jwt->isValid($token, $this->tokenSecret) ? $token : null;
     }
 
-    private function getRefreshTokenFromCookie()
+    private function getRefreshTokenFromCookie($validate = true)
     {
         if (!empty($_COOKIE['refreshToken'])) {
-            return $this->jwt->isValid($_COOKIE['refreshToken'], $this->refreshTokenSecret) ? $_COOKIE['refreshToken'] : null;
+            return !$validate || $this->jwt->isValid($_COOKIE['refreshToken'], $this->refreshTokenSecret) ? $_COOKIE['refreshToken'] : null;
         }
 
         $refreshToken = $this->getServerEntryValue('HTTP_COOKIE');
         $refreshToken = $refreshToken ?? $this->getHeaderValue('Cookie');
         $isRefreshTokenPresent = preg_match('/(^|[;]{0,})(refreshToken=)(.+)($|[;]{0,})/', $refreshToken, $match);
         $refreshToken = $isRefreshTokenPresent ? urldecode($match[3]) : null;
-        return $this->jwt->isValid($refreshToken, $this->refreshTokenSecret) ? $refreshToken : null;
+        return !$validate || $this->jwt->isValid($refreshToken, $this->refreshTokenSecret) ? $refreshToken : null;
     }
 
     private function getHeaderValue($key)
