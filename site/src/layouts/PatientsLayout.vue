@@ -1,5 +1,6 @@
 <template>
     <div>
+        <PatientsNavBar />
         <div class="container">
             <router-view />
         </div>
@@ -7,9 +8,13 @@
 </template>
 
 <script>
+import PatientsNavBar from '../components/PatientsNavBar.vue';
 
 export default {
-    name: 'App'
+    name: 'App',
+    components: {
+        PatientsNavBar,
+    }
 }
 </script>
 

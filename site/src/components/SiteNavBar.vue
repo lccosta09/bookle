@@ -6,13 +6,6 @@
                 <button class="navbar-toggler" :class="{'collapsed': collapsed}" type="button" v-on:click="() => this.toogleCollapse()">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" :class="{'collapse': collapsed, 'show': !collapsed}" id="navbarResponsive">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <router-link :to="{ name: 'doctors' }" class="nav-link">Médicos</router-link>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -20,7 +13,7 @@
 
 <script>
 export default {
-    name: 'App',
+    name: 'SiteNavBar',
     data() {
         return {
             collapsed: true
