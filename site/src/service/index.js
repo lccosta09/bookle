@@ -23,7 +23,7 @@ export default ({ requiresAuth = true } = {}) => {
         const { dispatch } = store;
 
         if (error.response.status === 401) {
-            return dispatch('user/refreshToken', {}).then(() => {
+            return dispatch('user/refreshToken').then(() => {
                 if (store.state.user.loggedUser.token) {
                     error.config.headers.Authorization = `Bearer ${store.state.user.loggedUser.token}`;
                     return instance.request(error.config);

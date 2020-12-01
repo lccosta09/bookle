@@ -29,6 +29,16 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+    if (to.name === 'login') {
+        await store.dispatch('user/refreshToken');
+        if (store.state.user.loggedUser.token) {
+            next({
+                path: 'doctors'
+            });
+            return;
+        }
+    }
+
     if (!store.state.user.loggedUser.token && to.name !== 'login') {
         await store.dispatch('user/refreshToken', {}, {root: true});
         if (store.state.user.loggedUser.token) {

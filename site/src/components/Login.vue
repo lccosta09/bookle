@@ -53,6 +53,8 @@ export default {
             loginErrorMessage: ''
         }
     },
+    async mounted() {
+    },
     methods: {
         async onSubmit(event) {
             this.loading = true;
@@ -68,7 +70,7 @@ export default {
             this.password = '';
             this.loading = false;
 
-            if (this.$store.state.user.loggedUser.email) {
+            if (this.$store.state.user.loggedUser.token) {
                 this.$router.push('doctors');
                 return;
             }
