@@ -1,4 +1,4 @@
-import axios from 'axios';
+import service from '../../service';
 
 const doctor = {
     namespaced: true,
@@ -19,13 +19,8 @@ const doctor = {
         add(context, payload) {
             context.commit('add', payload);
         },
-        async getAll({commit, rootState, dispatch}) {
-            axios.defaults.withCredentials = true;
-            await axios.get('http://bookle-api.docker:1212/doctors.php', {
-                    headers: {
-                        'Authorization': `${'Bearer'} ${rootState.user.loggedUser.token}`
-                    }
-                })
+        async getAll({commit, dispatch}) {
+            await service().get('doctors.php')
                 .then(response => {
                     commit('setDoctors', response.data)
                 })
