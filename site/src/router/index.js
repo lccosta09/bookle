@@ -33,6 +33,7 @@ router.beforeEach(async (to, from, next) => {
         await store.dispatch('user/refreshToken', {}, {root: true});
         if (store.state.user.loggedUser.token) {
             next();
+            return;
         }
 
         next({

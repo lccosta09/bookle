@@ -103,7 +103,7 @@ class Auth
 
     private function getToken($userId)
     {
-        $token = $this->jwt->encode(['sub' => $userId], strtotime('+10 seconds'), $this->tokenSecret);
+        $token = $this->jwt->encode(['sub' => $userId], strtotime('+15 minutes'), $this->tokenSecret);
 
         $refreshTokenExpiration = strtotime('+30 days');
         $refreshToken = $this->jwt->encode(['sub' => $userId], $refreshTokenExpiration, $this->refreshTokenSecret);

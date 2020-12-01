@@ -1,4 +1,4 @@
-import axios from 'axios';
+import service from '../../service';
 
 const schedule = {
     namespaced: true,
@@ -13,16 +13,12 @@ const schedule = {
         }
     },
     actions: {
-        async getByDoctorAndDate({commit, rootState, dispatch}, payload) {
+        async getByDoctorAndDate({commit}, payload) {
             let month = payload.date.month + 1;
             const day = payload.date.day.toString().length < 2 ? '0'.repeat(2 - payload.date.day.toString().length) + payload.date.day : payload.date.day.toString();
             month = month.toString().length < 2 ? '0'.repeat(2 - month.toString().length) + month : month.toString();
 
-            axios.defaults.withCredentials = true;
-            await axios.get('http://bookle-api.docker:1212/schedules.php', {
-                    headers: {
-                        'Authorization': `${'Bearer'} ${rootState.user.loggedUser.token}`
-                    },
+            await service().get('schedules.php', {
                     params: {
                         doctorId: payload.doctorId,
                         year: payload.date.year,
@@ -32,23 +28,13 @@ const schedule = {
                 })
                 .then(response => {
                     commit('setSchedule', response.data)
-                })
-                .catch(async error => {
-                    if (error.response.status === 401) {
-                        await dispatch('user/refreshToken', {}, {root: true});
-                        await dispatch('schedule/getByDoctorAndDate', payload, {root: true});
-                    }
                 });
         },
-        async getByDoctorAndMonth({commit, rootState, dispatch}, payload) {
+        async getByDoctorAndMonth({commit}, payload) {
             let month = payload.date.month + 1;
             month = month.toString().length < 2 ? '0'.repeat(2 - month.toString().length) + month : month.toString();
 
-            axios.defaults.withCredentials = true;
-            await axios.get('http://bookle-api.docker:1212/schedules.php', {
-                    headers: {
-                        'Authorization': `${'Bearer'} ${rootState.user.loggedUser.token}`
-                    },
+            await service().get('schedules.php', {
                     params: {
                         doctorId: payload.doctorId,
                         year: payload.date.year,
@@ -57,12 +43,6 @@ const schedule = {
                 })
                 .then(response => {
                     commit('setSchedule', response.data)
-                })
-                .catch(async error => {
-                    if (error.response.status === 401) {
-                        await dispatch('user/refreshToken', {}, {root: true});
-                        await dispatch('schedule/getByDoctorAndMonth', payload, {root: true});
-                    }
                 });
         }
     }

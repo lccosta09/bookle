@@ -1,4 +1,4 @@
-import axios from 'axios'
+import service from '../../service';
 
 const date = {
     namespaced: true,
@@ -14,7 +14,10 @@ const date = {
     },
     actions: {
         async getTime({commit}) {
-            await axios.get('http://bookle-api.docker:1212/date.php')
+            await service({
+                    requiresAuth: false
+                })
+                .get('date.php')
                 .then(response => {
                     commit('setTime', parseInt(response.data.date))
                 });

@@ -19,16 +19,10 @@ const doctor = {
         add(context, payload) {
             context.commit('add', payload);
         },
-        async getAll({commit, dispatch}) {
+        async getAll({commit}) {
             await service().get('doctors.php')
                 .then(response => {
                     commit('setDoctors', response.data)
-                })
-                .catch(async error => {
-                    if (error.response.status === 401) {
-                        await dispatch('user/refreshToken', {}, {root: true});
-                        await dispatch('doctor/getAll', {}, {root: true});
-                    }
                 });
         }
     }
