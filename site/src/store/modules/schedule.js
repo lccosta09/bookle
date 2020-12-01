@@ -36,7 +36,7 @@ const schedule = {
                 .catch(async error => {
                     if (error.response.status === 401) {
                         await dispatch('user/refreshToken', {}, {root: true});
-                        await dispatch('schedule/getByDoctorAndDate', {}, {root: true});
+                        await dispatch('schedule/getByDoctorAndDate', payload, {root: true});
                     }
                 });
         },
