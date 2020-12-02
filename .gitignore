@@ -1,6 +1,11 @@
 /site/.DS_Store
 /site/node_modules
 /site/dist
+
+/admin/.DS_Store
+/admin/node_modules
+/admin/dist
+
 /mysql/data
 
 
@@ -13,6 +18,11 @@
 /site/yarn-debug.log*
 /site/yarn-error.log*
 /site/pnpm-debug.log*
+
+/admin/npm-debug.log*
+/admin/yarn-debug.log*
+/admin/yarn-error.log*
+/admin/pnpm-debug.log*
 
 # Editor directories and files
 .idea
