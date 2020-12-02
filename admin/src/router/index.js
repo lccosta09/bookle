@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import AdminLayout from '../layouts/AdminLayout.vue';
-import LoginLayout from '../layouts/LoginLayout.vue';
+import DefaultLayout from '../layouts/DefaultLayout.vue';
 import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue';
 import store from '../store';
@@ -8,7 +8,7 @@ import store from '../store';
 const routes = [
     {
         path: '/login',
-        component: LoginLayout,
+        component: DefaultLayout,
         children: [
             {
                 path: '',
