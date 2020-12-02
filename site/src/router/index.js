@@ -1,9 +1,9 @@
 import { createWebHistory, createRouter } from 'vue-router';
-import Home from '../components/Home.vue';
 import PatientsLayout from '../layouts/PatientsLayout.vue';
 import SiteLayout from '../layouts/SiteLayout.vue';
-import Login from '../components/Login.vue';
-import Doctors from '../components/Doctors.vue';
+import Login from '../views/Login.vue';
+import Doctors from '../views/Doctors.vue';
+import Home from '../views/Home.vue';
 import store from '../store';
 
 const routes = [

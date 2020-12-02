@@ -17,8 +17,9 @@ class Auth
     }
 
     public function login($email, $password) {
-        $sql = "SELECT users.id, users.email, users.name, users.user_password
+        $sql = "SELECT users.id, users.email, users.name, users.user_password, doctors.id AS doctor_id
                 FROM users
+                LEFT JOIN doctors ON (users.id = doctors.user_id)
                 WHERE users.email = '$email'
                 LIMIT 1";
         $stmt = $this->dbh->prepare($sql);
@@ -37,6 +38,7 @@ class Auth
             'id' =>  $user['id'],
             'name' =>  $user['name'],
             'email' =>  $user['email'],
+            'type' => $user['doctor_id'] ? 'doctor' : 'patient',
             'token' => $this->getToken($user['id'])
         ];
     }
@@ -52,8 +54,9 @@ class Auth
 
         $refreshToken = addslashes($refreshToken);
 
-        $sql = "SELECT auth.id AS auth_id, users.id, users.email, users.name, users.user_password
+        $sql = "SELECT auth.id AS auth_id, users.id, users.email, users.name, users.user_password, doctors.id AS doctor_id
                 FROM auth INNER JOIN users ON (auth.user_id = users.id)
+                LEFT JOIN doctors ON (users.id = doctors.user_id)
                 AND refresh_token = '$refreshToken'
                 LIMIT 1";
         $stmt = $this->dbh->prepare($sql);
@@ -73,6 +76,7 @@ class Auth
             'id' =>  $user['id'],
             'name' =>  $user['name'],
             'email' =>  $user['email'],
+            'type' => $user['doctor_id'] ? 'doctor' : 'patient',
             'token' => $this->getToken($user['id'])
         ];
     }

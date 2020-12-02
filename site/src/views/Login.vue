@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import Loading from './Loading.vue';
-import FlashMessage from './FlashMessage.vue';
+import Loading from '../components/Loading.vue';
+import FlashMessage from '../components/FlashMessage.vue';
 
 export default {
     name: 'Login',

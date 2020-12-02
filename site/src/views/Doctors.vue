@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import Modal from './Modal.vue';
-import Doctor from './Doctor.vue';
+import Modal from '../components/Modal.vue';
+import Doctor from '../components/Doctor.vue';
 
 export default {
     name: 'Doctors',
