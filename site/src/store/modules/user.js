@@ -10,7 +10,8 @@ const user = {
                 email: '',
                 token: ''
             },
-            loginErrorMessage: ''
+            loginErrorMessage: '',
+            logoutErrorMessage: ''
         }
     },
     mutations: {
@@ -23,6 +24,9 @@ const user = {
         },
         setLoginErrorMessage(state, payload) {
             state.loginErrorMessage = payload;
+        },
+        setLogoutErrorMessage(state, payload) {
+            state.logoutErrorMessage = payload;
         }
     },
     actions: {
@@ -37,12 +41,14 @@ const user = {
                     commit('setLoginErrorMessage', '');
                 })
                 .catch(error => {
-                    commit('setLoggedUser', {
-                        email: '',
-                        password: '',
-                        token: ''
-                    });
-                    commit('setLoginErrorMessage', error.response.data.message);
+                    if (error.response.status === 401) {
+                        commit('setLoggedUser', {
+                            email: '',
+                            password: '',
+                            token: ''
+                        });
+                        commit('setLoginErrorMessage', error.response.data.message);
+                    }
                 });
         },
         async refreshToken({commit}) {
@@ -59,6 +65,23 @@ const user = {
                             token: ''
                         });
                         commit('setLoginErrorMessage', error.response.data.message);
+                    }
+                });
+        },
+        async logout({commit}) {
+            axios.defaults.withCredentials = true;
+            await axios.get('http://bookle-api.docker:1212/logout.php')
+                .then(async () => {
+                    commit('setLoggedUser', {
+                        email: '',
+                        password: '',
+                        token: ''
+                    });
+                    commit('setLogoutErrorMessage', '');
+                })
+                .catch(error => {
+                    if (error.response.status === 401) {
+                        commit('setLogoutErrorMessage', error.response.data.message);
                     }
                 });
         }

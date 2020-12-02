@@ -8,17 +8,6 @@ import store from '../store';
 
 const routes = [
     {
-        path: '/',
-        component: SiteLayout,
-        children: [
-            {
-                path: '',
-                name: 'home',
-                component: Home
-            }
-        ]
-    },
-    {
         path: '/login',
         component: SiteLayout,
         children: [
@@ -37,6 +26,17 @@ const routes = [
                 path: '',
                 name: 'doctors',
                 component: Doctors
+            }
+        ]
+    },
+    {
+        path: '/',
+        component: SiteLayout,
+        children: [
+            {
+                path: '',
+                name: 'home',
+                component: Home
             }
         ]
     }

@@ -83,7 +83,7 @@ class Auth
 
         if (empty($refreshToken)) {
             setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
-            return;
+            return true;
         }
 
         $refreshToken = addslashes($refreshToken);
@@ -93,6 +93,7 @@ class Auth
         $stmt->execute([$refreshToken]);
 
         setcookie('refreshToken', null, strtotime('-1 hour'), null, null, false, true);
+        return true;
     }
 
     public function validate()

@@ -1,7 +1,6 @@
 <template>
     <div>
-        <Loading :loading="loadingDoctors" />
-        <div v-if="!loadingDoctors" class="row">
+        <div class="row">
             <div v-for="doctor in this.$store.state.doctor.doctors" :key="doctor.id" class="col-lg-4">
                 <div class="bs-component">
                     <div class="card border-primary mb-3 doctor">
@@ -40,14 +39,12 @@
 </template>
 
 <script>
-import Loading from './Loading.vue';
 import Modal from './Modal.vue';
 import Doctor from './Doctor.vue';
 
 export default {
     name: 'Doctors',
     components: {
-        Loading,
         Modal,
         Doctor
     },
@@ -59,7 +56,6 @@ export default {
         };
 
         return {
-            loadingDoctors: true,
             loadingModal: true,
             isModalOpen: false,
             doctor: {
@@ -79,7 +75,7 @@ export default {
         }
     },
     async mounted() {
-        this.loadingDoctors = true;
+        this.$emit('loadind', true);
 
         await this.$store.dispatch('date/getTime');
 
@@ -94,7 +90,7 @@ export default {
 
         await this.$store.dispatch('doctor/getAll');
 
-        this.loadingDoctors = false;
+        this.$emit('loadind', false);
     },
     methods: {
         async openModal(doctor) {

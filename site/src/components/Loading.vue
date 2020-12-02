@@ -1,5 +1,5 @@
 <template>
-    <div class="lds-ring" v-if="loading">
+    <div class="lds-ring" v-show="loading">
         <div></div>
         <div></div>
         <div></div>

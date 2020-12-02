@@ -3,7 +3,7 @@
         <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
             <div class="container">
                 <router-link :to="{ name: 'home' }" class="navbar-brand">Bookle</router-link>
-                <button class="navbar-toggler" :class="{'collapsed': collapsed}" type="button" v-on:click="() => this.toogleCollapse()">
+                <button class="navbar-toggler" :class="{'collapsed': collapsed}" type="button" v-on:click="() => this.collapsed = !this.collapsed">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
@@ -17,11 +17,6 @@ export default {
     data() {
         return {
             collapsed: true
-        }
-    },
-    methods: {
-        toogleCollapse() {
-            this.collapsed = !this.collapsed; 
         }
     }
 }
