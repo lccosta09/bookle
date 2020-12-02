@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-gradient-primary">
         <Loading :loading="loading" />
         <div class="container">
             <div v-if="!loading" class="row justify-content-center">
