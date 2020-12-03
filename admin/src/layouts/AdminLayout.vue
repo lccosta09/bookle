@@ -1,24 +1,28 @@
 <template>
-    <div>
-        <PatientsNavBar v-on:logout="logout" />
+    <div id="page-top">
         <Loading :loading="loading" />
-        <div v-show="!loading">
-            <div class="container">
-                <router-view v-on:loading="(loading) => this.loading = loading" />
+        <div id="wrapper">
+            <NavBar v-on:logout="logout" />
+            <div id="content-wrapper" class="d-flex flex-column">
+                <div id="content">
+                    <NavBarTop v-on:logout="logout" />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import NavBar from '../components/NavBar.vue';
+import NavBarTop from '../components/NavBarTop.vue';
 import Loading from '../components/Loading.vue';
-import PatientsNavBar from '../components/PatientsNavBar.vue';
 
 export default {
     name: 'App',
     components: {
         Loading,
-        PatientsNavBar
+        NavBar,
+        NavBarTop
     },
     data() {
         return {
