@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" :class="{'toggled': toggled}" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
@@ -105,7 +105,7 @@
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                <button class="rounded-circle border-0" id="sidebarToggle" v-on:click="() => this.toggled = !this.toggled"></button>
             </div>
         </ul>
     </div>
@@ -116,7 +116,7 @@ export default {
     name: 'NavBar',
     data() {
         return {
-            collapsed: true
+            toggled: false
         }
     }
 }
