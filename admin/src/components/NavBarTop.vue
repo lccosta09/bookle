@@ -172,6 +172,19 @@ export default {
         return {
             showUserDropDown: false
         }
+    },
+    mounted() {
+        document.addEventListener('click', this.close);
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.close);
+    },
+    methods: {
+        close(event) {
+            if (!document.getElementById('userDropdown').contains(event.target)) {
+                this.showUserDropDown = false;
+            }
+        }
     }
 }
 </script>
