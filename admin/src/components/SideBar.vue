@@ -31,6 +31,10 @@
 
                 <hr class="sidebar-divider">
             </div>
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle" v-on:click="$emit('toggled')"></button>
+            </div>
         </ul>
     </div>
 </template>
@@ -99,6 +103,39 @@ export default {
                             ]
                         }
                     ]
+                },
+                {
+                    text: "Addons",
+                    items: [
+                        {
+                            text: "Pages",
+                            collapsed: true,
+                            items: [
+                                {
+                                    text: "Login Screens",
+                                    items: [
+                                        {
+                                            text: "Login"
+                                        }
+                                    ]
+                                },
+                                {
+                                    text: "Other Pages",
+                                    items: [
+                                        {
+                                            text: "404 Page"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            text: "Charts"
+                        },
+                        {
+                            text: "Tables"
+                        }
+                    ]
                 }
             ]
         }
@@ -108,9 +145,6 @@ export default {
             const menu = JSON.parse(JSON.stringify(this.menu));
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
-                    console.log(this.menu[itemIndex].items[subItem0Index].text);
-                    console.log(this.menu[itemIndex].items[subItem0Index].items);
-
                     if (this.menu[itemIndex].items[subItem0Index].text !== path || !this.menu[itemIndex].items[subItem0Index].items) {
                         this.menu[itemIndex].items[subItem0Index].collapsed = true;
                         return;
