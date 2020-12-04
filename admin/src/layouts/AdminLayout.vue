@@ -8,7 +8,7 @@
                 v-on:logout="logout" />
             <div id="content-wrapper" class="d-flex flex-column">
                 <div id="content">
-                    <NavBarTop
+                    <TopBar
                         :userDropdownToggled="userDropdownToggled"
                         v-on:sidebar-toggled="toggleSideBar"
                         v-on:user-dropdown-toggled="toggleUserDropdown"
@@ -21,7 +21,7 @@
 
 <script>
 import SideBar from '../components/SideBar.vue';
-import NavBarTop from '../components/NavBarTop.vue';
+import TopBar from '../components/TopBar.vue';
 import Loading from '../components/Loading.vue';
 
 export default {
@@ -29,7 +29,7 @@ export default {
     components: {
         Loading,
         SideBar,
-        NavBarTop
+        TopBar
     },
     data() {
         return {

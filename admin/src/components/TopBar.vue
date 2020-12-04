@@ -167,7 +167,7 @@
 
 <script>
 export default {
-    name: 'NavBarTop',
+    name: 'TopBar',
     props: {
         userDropdownToggled: {
             default() {

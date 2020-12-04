@@ -15,7 +15,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
 
             <!-- Divider -->
@@ -119,6 +120,40 @@ export default {
             default() {
                 return false;
             }
+        }
+    },
+    data() {
+        return {
+            menu: [
+                {
+                    items: [
+                        {
+                            text: "Dashboard"
+                        }
+                    ]
+                },
+                {
+                    text: "Interface",
+                    items: [
+                        {
+                            text: "Components",
+                            items: [
+                                {
+                                    text: "Custom Components",
+                                    items: [
+                                        {
+                                            text: 'Buttons'
+                                        },
+                                        {
+                                            text: 'Cards'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     }
 }
