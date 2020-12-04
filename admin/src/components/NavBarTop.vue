@@ -135,13 +135,13 @@
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow" :class="{'show': showUserDropDown}" v-on:click="() => this.showUserDropDown = !this.showUserDropDown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" :aria-expanded="showUserDropDown ? 'true' : 'false'">
+            <li class="nav-item dropdown no-arrow" :class="{'show': userDropdownToggled}" v-on:click="$emit('user-dropdown-toggled')">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" :aria-expanded="userDropdownToggled ? 'true' : 'false'">
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ $store.state.user.loggedUser.email }}</span>
                     <img class="img-profile rounded-circle" src="../assets/images/undraw_profile.svg">
                 </a>
                 <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" :class="{'show': showUserDropDown}" aria-labelledby="userDropdown">
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" :class="{'show': userDropdownToggled}" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
@@ -168,21 +168,10 @@
 <script>
 export default {
     name: 'NavBarTop',
-    data() {
-        return {
-            showUserDropDown: false
-        }
-    },
-    mounted() {
-        document.addEventListener('click', this.close);
-    },
-    beforeUnmount() {
-        document.removeEventListener('click', this.close);
-    },
-    methods: {
-        close(event) {
-            if (!document.getElementById('userDropdown').contains(event.target)) {
-                this.showUserDropDown = false;
+    props: {
+        userDropdownToggled: {
+            default() {
+                return false;
             }
         }
     }
