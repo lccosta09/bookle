@@ -2,7 +2,7 @@
     <div id="page-top">
         <Loading :loading="loading" />
         <div id="wrapper">
-            <NavBar
+            <SideBar
                 :toggled="sideBarToggled"
                 v-on:toggled="toggleSideBar"
                 v-on:logout="logout" />
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue';
+import SideBar from '../components/SideBar.vue';
 import NavBarTop from '../components/NavBarTop.vue';
 import Loading from '../components/Loading.vue';
 
@@ -28,7 +28,7 @@ export default {
     name: 'App',
     components: {
         Loading,
-        NavBar,
+        SideBar,
         NavBarTop
     },
     data() {
