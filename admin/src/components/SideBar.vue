@@ -14,12 +14,12 @@
                 <div v-if="item.text" class="sidebar-heading">{{ item.text }}</div>
 
                 <li v-for="(subItem0, subItem0Index) in item.items" :key="`sub-item-${subItem0Index}`" class="nav-item">
-                    <a class="nav-link collapsed" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="false">
+                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>{{ subItem0.text }}</span>
                     </a>
 
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="collapseTwo" class="collapse" :class="{show: !subItem0.collapsed}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div v-for="(subItem1, subItem1Index) in subItem0.items" :key="`sub-item-${subItem1Index}`" class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">{{ subItem0.text }}</h6>
                             <div>
@@ -61,6 +61,7 @@ export default {
                     items: [
                         {
                             text: "Components",
+                            collapsed: true,
                             items: [
                                 {
                                     text: "Custom Components",
