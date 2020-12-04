@@ -14,7 +14,7 @@
                 <div v-if="item.text" class="sidebar-heading">{{ item.text }}</div>
 
                 <li v-for="(subItem0, subItem0Index) in item.items" :key="`sub-item-${subItem0Index}`" class="nav-item">
-                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'">
+                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'" v-on:click="showSubItems(subItem0.text)">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>{{ subItem0.text }}</span>
                     </a>
@@ -79,6 +79,18 @@ export default {
                     ]
                 }
             ]
+        }
+    },
+    methods: {
+        showSubItems(path) {
+            const menu = JSON.parse(JSON.stringify(this.menu));
+            Object.values(menu).forEach((item, itemIndex) => {
+                Object.values(item.items).forEach((subItem0, subItem0Index) => {
+                    if (this.menu[itemIndex].items[subItem0Index].text === path && this.menu[itemIndex].items[subItem0Index].items) {
+                        this.menu[itemIndex].items[subItem0Index].collapsed = !this.menu[itemIndex].items[subItem0Index].collapsed;
+                    }
+                });
+            });
         }
     }
 }
