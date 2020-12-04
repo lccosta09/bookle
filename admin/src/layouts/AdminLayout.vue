@@ -2,10 +2,10 @@
     <div id="page-top">
         <Loading :loading="loading" />
         <div id="wrapper">
-            <NavBar v-on:logout="logout" />
+            <NavBar :toggled="sideBarToggled" v-on:toggled="toggleSideBar" v-on:logout="logout" />
             <div id="content-wrapper" class="d-flex flex-column">
                 <div id="content">
-                    <NavBarTop v-on:logout="logout" />
+                    <NavBarTop v-on:sidebar-toggled="toggleSideBar" v-on:logout="logout" />
                 </div>
             </div>
         </div>
@@ -26,7 +26,8 @@ export default {
     },
     data() {
         return {
-            loading: false
+            loading: false,
+            sideBarToggled: false
         };
     },
     methods: {
@@ -38,6 +39,9 @@ export default {
             if (!this.$store.state.user.logoutErrorMessage) {
                 this.$router.push('login');
             }
+        },
+        toggleSideBar() {
+            this.sideBarToggled = !this.sideBarToggled;
         }
     }
 }

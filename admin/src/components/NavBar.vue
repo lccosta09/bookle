@@ -105,7 +105,7 @@
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle" v-on:click="() => this.toggled = !this.toggled"></button>
+                <button class="rounded-circle border-0" id="sidebarToggle" v-on:click="$emit('toggled')"></button>
             </div>
         </ul>
     </div>
@@ -114,9 +114,11 @@
 <script>
 export default {
     name: 'NavBar',
-    data() {
-        return {
-            toggled: false
+    props: {
+        toggled: {
+            default() {
+                return false;
+            }
         }
     }
 }
