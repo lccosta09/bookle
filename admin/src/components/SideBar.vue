@@ -19,11 +19,13 @@
                         <span>{{ subItem0.text }}</span>
                     </a>
 
-                    <div id="collapseTwo" class="collapse" :class="{show: !subItem0.collapsed}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div v-for="(subItem1, subItem1Index) in subItem0.items" :key="`sub-item-${subItem1Index}`" class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">{{ subItem1.text }}</h6>
-                            <div v-for="(subItem2, subItem2Index) in subItem1.items" :key="`sub-item-${subItem2Index}`">
-                                <a class="collapse-item" href="buttons.html">{{ subItem2.text }}</a>
+                    <div id="collapseTwo" class="collapse" :class="{show: !subItem0.collapsed && subItem0.items}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <div v-for="(subItem1, subItem1Index) in subItem0.items" :key="`sub-item-${subItem1Index}`">
+                                <h6 class="collapse-header">{{ subItem1.text }}</h6>
+                                <div v-for="(subItem2, subItem2Index) in subItem1.items" :key="`sub-item-${subItem2Index}`">
+                                    <a class="collapse-item" href="buttons.html">{{ subItem2.text }}</a>
+                                </div>
                             </div>
                         </div>
                     </div>
