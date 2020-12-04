@@ -108,9 +108,15 @@ export default {
             const menu = JSON.parse(JSON.stringify(this.menu));
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
-                    if (this.menu[itemIndex].items[subItem0Index].text === path && this.menu[itemIndex].items[subItem0Index].items) {
-                        this.menu[itemIndex].items[subItem0Index].collapsed = !this.menu[itemIndex].items[subItem0Index].collapsed;
+                    console.log(this.menu[itemIndex].items[subItem0Index].text);
+                    console.log(this.menu[itemIndex].items[subItem0Index].items);
+
+                    if (this.menu[itemIndex].items[subItem0Index].text !== path || !this.menu[itemIndex].items[subItem0Index].items) {
+                        this.menu[itemIndex].items[subItem0Index].collapsed = true;
+                        return;
                     }
+
+                    this.menu[itemIndex].items[subItem0Index].collapsed = !this.menu[itemIndex].items[subItem0Index].collapsed;
                 });
             });
         }
