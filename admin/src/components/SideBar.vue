@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" :class="{'toggled': toggled}" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" :class="{'toggled': !toggled}" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
@@ -14,7 +14,7 @@
                 <div v-if="item.text" class="sidebar-heading">{{ item.text }}</div>
 
                 <li v-for="(subItem0, subItem0Index) in item.items" :key="`sub-item-${subItem0Index}`" class="nav-item">
-                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'" v-on:click="$emit('toogle-menu-items-collapse', subItem0.text)">
+                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'" v-on:click="$emit('toggle-menu-items-collapse', subItem0.text)">
                         <i class="fas fa-fw" :class="{[subItem0.icon]: true}"></i>
                         <span>{{ subItem0.text }}</span>
                     </a>
@@ -47,7 +47,7 @@ export default {
     props: {
         toggled: {
             default() {
-                return false;
+                return true;
             }
         },
         menu: {

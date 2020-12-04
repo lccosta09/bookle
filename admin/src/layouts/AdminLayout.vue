@@ -5,7 +5,7 @@
             <SideBar
                 :menu="sideBarMenu"
                 :toggled="sideBarToggled"
-                v-on:toogle-menu-items-collapse="toogleMenuItemsCollapse"
+                v-on:toggle-menu-items-collapse="toggleMenuItemsCollapse"
                 v-on:toggled="toggleSideBar"
                 v-on:logout="logout" />
             <div id="content-wrapper" class="d-flex flex-column">
@@ -36,7 +36,7 @@ export default {
     data() {
         return {
             loading: false,
-            sideBarToggled: false,
+            sideBarToggled: true,
             userDropdownToggled: false,
             sideBarMenu: [
                 {
@@ -158,7 +158,7 @@ export default {
                 this.$router.push('login');
             }
         },
-        toogleMenuItemsCollapse(path) {
+        toggleMenuItemsCollapse(path) {
             const menu = JSON.parse(JSON.stringify(this.sideBarMenu));
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
@@ -171,8 +171,19 @@ export default {
                 });
             });
         },
+        collapseAllMenuItems() {
+            const menu = JSON.parse(JSON.stringify(this.sideBarMenu));
+            Object.values(menu).forEach((item, itemIndex) => {
+                Object.values(item.items).forEach((subItem0, subItem0Index) => {
+                    this.sideBarMenu[itemIndex].items[subItem0Index].collapsed = true;
+                });
+            });
+        },
         toggleSideBar() {
             this.sideBarToggled = !this.sideBarToggled;
+            if (!this.sideBarToggled) {
+                this.collapseAllMenuItems();
+            }
         },
         toggleUserDropdown() {
             this.userDropdownToggled = !this.userDropdownToggled;
