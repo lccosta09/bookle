@@ -3,7 +3,9 @@
         <Loading :loading="loading" />
         <div id="wrapper">
             <SideBar
+                :menu="sideBarMenu"
                 :toggled="sideBarToggled"
+                v-on:toogle-menu-items-collapse="toogleMenuItemsCollapse"
                 v-on:toggled="toggleSideBar"
                 v-on:logout="logout" />
             <div id="content-wrapper" class="d-flex flex-column">
@@ -35,7 +37,109 @@ export default {
         return {
             loading: false,
             sideBarToggled: false,
-            userDropdownToggled: false
+            userDropdownToggled: false,
+            sideBarMenu: [
+                {
+                    items: [
+                        {
+                            text: "Dashboard",
+                            icon: "fa-tachometer-alt"
+                        }
+                    ]
+                },
+                {
+                    text: "Interface",
+                    items: [
+                        {
+                            text: "Components",
+                            icon: "fa-cog",
+                            collapsed: true,
+                            items: [
+                                {
+                                    text: "Custom Components",
+                                    items: [
+                                        {
+                                            text: 'Buttons'
+                                        },
+                                        {
+                                            text: 'Cards'
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            text: "Utilities",
+                            icon: "fa-wrench",
+                            collapsed: true,
+                            items: [
+                                {
+                                    text: "Custom Utilities",
+                                    items: [
+                                        {
+                                            text: 'Colors'
+                                        },
+                                        {
+                                            text: 'Borders'
+                                        },
+                                        {
+                                            text: 'Animations'
+                                        },
+                                        {
+                                            text: 'Others'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    text: "Addons",
+                    items: [
+                        {
+                            text: "Pages",
+                            icon: "fa-folder",
+                            collapsed: true,
+                            items: [
+                                {
+                                    text: "Login Screens",
+                                    items: [
+                                        {
+                                            text: "Login"
+                                        },
+                                        {
+                                            text: "Register"
+                                        },
+                                        {
+                                            text: "Forgot Password"
+                                        }
+                                    ]
+                                },
+                                {
+                                    text: "Other Pages",
+                                    items: [
+                                        {
+                                            text: "404 Page"
+                                        },
+                                        {
+                                            text: "Blank Page"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            text: "Charts",
+                            icon: "fa-chart-area"
+                        },
+                        {
+                            text: "Tables",
+                            icon: "fa-table"
+                        }
+                    ]
+                }
+            ]
         };
     },
     mounted() {
@@ -53,6 +157,19 @@ export default {
             if (!this.$store.state.user.logoutErrorMessage) {
                 this.$router.push('login');
             }
+        },
+        toogleMenuItemsCollapse(path) {
+            const menu = JSON.parse(JSON.stringify(this.sideBarMenu));
+            Object.values(menu).forEach((item, itemIndex) => {
+                Object.values(item.items).forEach((subItem0, subItem0Index) => {
+                    if (this.sideBarMenu[itemIndex].items[subItem0Index].text !== path || !this.sideBarMenu[itemIndex].items[subItem0Index].items) {
+                        this.sideBarMenu[itemIndex].items[subItem0Index].collapsed = true;
+                        return;
+                    }
+
+                    this.sideBarMenu[itemIndex].items[subItem0Index].collapsed = !this.sideBarMenu[itemIndex].items[subItem0Index].collapsed;
+                });
+            });
         },
         toggleSideBar() {
             this.sideBarToggled = !this.sideBarToggled;

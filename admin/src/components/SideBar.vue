@@ -14,7 +14,7 @@
                 <div v-if="item.text" class="sidebar-heading">{{ item.text }}</div>
 
                 <li v-for="(subItem0, subItem0Index) in item.items" :key="`sub-item-${subItem0Index}`" class="nav-item">
-                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'" v-on:click="showSubItems(subItem0.text)">
+                    <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'" v-on:click="$emit('toogle-menu-items-collapse', subItem0.text)">
                         <i class="fas fa-fw" :class="{[subItem0.icon]: true}"></i>
                         <span>{{ subItem0.text }}</span>
                     </a>
@@ -49,127 +49,11 @@ export default {
             default() {
                 return false;
             }
-        }
-    },
-    data() {
-        return {
-            menu: [
-                {
-                    items: [
-                        {
-                            text: "Dashboard",
-                            icon: "fa-tachometer-alt"
-                        }
-                    ]
-                },
-                {
-                    text: "Interface",
-                    items: [
-                        {
-                            text: "Components",
-                            icon: "fa-cog",
-                            collapsed: true,
-                            items: [
-                                {
-                                    text: "Custom Components",
-                                    items: [
-                                        {
-                                            text: 'Buttons'
-                                        },
-                                        {
-                                            text: 'Cards'
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            text: "Utilities",
-                            icon: "fa-wrench",
-                            collapsed: true,
-                            items: [
-                                {
-                                    text: "Custom Utilities",
-                                    items: [
-                                        {
-                                            text: 'Colors'
-                                        },
-                                        {
-                                            text: 'Borders'
-                                        },
-                                        {
-                                            text: 'Animations'
-                                        },
-                                        {
-                                            text: 'Others'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    text: "Addons",
-                    items: [
-                        {
-                            text: "Pages",
-                            icon: "fa-folder",
-                            collapsed: true,
-                            items: [
-                                {
-                                    text: "Login Screens",
-                                    items: [
-                                        {
-                                            text: "Login"
-                                        },
-                                        {
-                                            text: "Register"
-                                        },
-                                        {
-                                            text: "Forgot Password"
-                                        }
-                                    ]
-                                },
-                                {
-                                    text: "Other Pages",
-                                    items: [
-                                        {
-                                            text: "404 Page"
-                                        },
-                                        {
-                                            text: "Blank Page"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            text: "Charts",
-                            icon: "fa-chart-area"
-                        },
-                        {
-                            text: "Tables",
-                            icon: "fa-table"
-                        }
-                    ]
-                }
-            ]
-        }
-    },
-    methods: {
-        showSubItems(path) {
-            const menu = JSON.parse(JSON.stringify(this.menu));
-            Object.values(menu).forEach((item, itemIndex) => {
-                Object.values(item.items).forEach((subItem0, subItem0Index) => {
-                    if (this.menu[itemIndex].items[subItem0Index].text !== path || !this.menu[itemIndex].items[subItem0Index].items) {
-                        this.menu[itemIndex].items[subItem0Index].collapsed = true;
-                        return;
-                    }
-
-                    this.menu[itemIndex].items[subItem0Index].collapsed = !this.menu[itemIndex].items[subItem0Index].collapsed;
-                });
-            });
+        },
+        menu: {
+            default() {
+                return [];
+            }
         }
     }
 }
