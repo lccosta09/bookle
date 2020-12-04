@@ -19,8 +19,18 @@
                         <span>{{ subItem0.text }}</span>
                     </a>
 
-                    <hr class="sidebar-divider">
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div v-for="(subItem1, subItem1Index) in subItem0.items" :key="`sub-item-${subItem1Index}`" class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">{{ subItem0.text }}</h6>
+                            <div>
+                                <a class="collapse-item" href="buttons.html">Buttons</a>
+                                <a class="collapse-item" href="cards.html">Cards</a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
+
+                <hr class="sidebar-divider">
             </div>
         </ul>
     </div>
