@@ -3,7 +3,7 @@
         <Loading :loading="loading" />
         <div id="wrapper">
             <SideBar
-                :menu="sideBarMenu"
+                :menuItems="sideBarMenuItems"
                 :toggled="sideBarToggled"
                 v-on:toggle-menu-items-collapse="toggleMenuItemsCollapse"
                 v-on:toggled="toggleSideBar"
@@ -38,7 +38,7 @@ export default {
             loading: false,
             sideBarToggled: true,
             userDropdownToggled: false,
-            sideBarMenu: [
+            sideBarMenuItems: [
                 {
                     items: [
                         {
@@ -159,23 +159,23 @@ export default {
             }
         },
         toggleMenuItemsCollapse(path) {
-            const menu = JSON.parse(JSON.stringify(this.sideBarMenu));
+            const menu = JSON.parse(JSON.stringify(this.sideBarMenuItems));
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
-                    if (this.sideBarMenu[itemIndex].items[subItem0Index].text !== path || !this.sideBarMenu[itemIndex].items[subItem0Index].items) {
-                        this.sideBarMenu[itemIndex].items[subItem0Index].collapsed = true;
+                    if (this.sideBarMenuItems[itemIndex].items[subItem0Index].text !== path || !this.sideBarMenuItems[itemIndex].items[subItem0Index].items) {
+                        this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = true;
                         return;
                     }
 
-                    this.sideBarMenu[itemIndex].items[subItem0Index].collapsed = !this.sideBarMenu[itemIndex].items[subItem0Index].collapsed;
+                    this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = !this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed;
                 });
             });
         },
         collapseAllMenuItems() {
-            const menu = JSON.parse(JSON.stringify(this.sideBarMenu));
+            const menu = JSON.parse(JSON.stringify(this.sideBarMenuItems));
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
-                    this.sideBarMenu[itemIndex].items[subItem0Index].collapsed = true;
+                    this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = true;
                 });
             });
         },
