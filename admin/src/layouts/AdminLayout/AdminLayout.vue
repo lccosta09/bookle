@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import SideBar from '../components/SideBar.vue';
-import TopBar from '../components/TopBar.vue';
-import Loading from '../components/Loading.vue';
+import SideBar from './SideBar.vue';
+import TopBar from './TopBar.vue';
+import Loading from './Loading.vue';
 
 export default {
     name: 'App',
