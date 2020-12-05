@@ -1,6 +1,5 @@
 <template>
     <div id="page-top">
-        <Loading :loading="loading" />
         <div id="wrapper">
             <SideBar
                 :menuItems="sideBarMenuItems"
@@ -15,7 +14,20 @@
                         v-on:sidebar-toggled="toggleSideBar"
                         v-on:user-dropdown-toggled="toggleUserDropdown"
                         v-on:logout="logout" />
+
+                    <div class="container-fluid">
+                        <Loading :loading="loading" />
+                        <router-view />
+                    </div>
                 </div>
+
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright © Your Website 2020</span>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
