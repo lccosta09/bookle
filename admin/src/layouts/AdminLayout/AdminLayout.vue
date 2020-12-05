@@ -155,9 +155,11 @@ export default {
         };
     },
     mounted() {
+        window.addEventListener('resize', this.resized);
         document.addEventListener('click', this.close);
     },
     beforeUnmount() {
+        window.removeEventListener('resize', this.resized);
         document.removeEventListener('click', this.close);
     },
     methods: {
@@ -203,6 +205,11 @@ export default {
         close(event) {
             if (!document.getElementById('userDropdown').contains(event.target)) {
                 this.userDropdownToggled = false;
+            }
+        },
+        resized() {
+            if (window.innerWidth < 500 && this.sideBarToggled) {
+                this.toggleSideBar();
             }
         }
     }
