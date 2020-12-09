@@ -9,7 +9,7 @@
                     <span>{{ subItem0.text }}</span>
                 </a>
 
-                <div id="collapseTwo" class="collapse" :class="{show: !subItem0.collapsed && subItem0.items}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseTwo" :class="{collapse: !subItem0.collapsing, collapsing: subItem0.collapsing, show: !subItem0.collapsed && subItem0.items}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" :style="subItem0.collapsing && {'height': '10px'}">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <div v-for="(subItem1, subItem1Index) in subItem0.items" :key="`sub-item-${subItem1Index}`">
                             <h6 class="collapse-header">{{ subItem1.text }}</h6>

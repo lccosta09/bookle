@@ -177,11 +177,17 @@ export default {
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
                     if (this.sideBarMenuItems[itemIndex].items[subItem0Index].text !== path || !this.sideBarMenuItems[itemIndex].items[subItem0Index].items) {
+                        this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = false;
                         this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = true;
                         return;
                     }
 
-                    this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = !this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed;
+                    this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = true;
+
+                    setTimeout(() => {
+                        this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = !this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed;
+                        this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = false;
+                    }, 60);
                 });
             });
         },
