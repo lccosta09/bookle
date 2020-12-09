@@ -4,7 +4,7 @@
             <div v-if="item.text" class="sidebar-heading">{{ item.text }}</div>
 
             <li v-for="(subItem0, subItem0Index) in item.items" :key="`sub-item-${subItem0Index}`" class="nav-item">
-                <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'"  aria-expanded="!subItem0.collapsed && 'false'" v-on:click="$emit('toggle-menu-items-collapse', subItem0.text)">
+                <a class="nav-link" :class="{collapsed: subItem0.collapsed}" href="#" :data-toggle="subItem0.items && 'collapse'" :aria-expanded="subItem0.collapsed ? 'false' : 'true'" v-on:click="$emit('toggle-menu-items-collapse', subItem0.text)">
                     <i class="fas fa-fw" :class="{[subItem0.icon]: true}"></i>
                     <span>{{ subItem0.text }}</span>
                 </a>
