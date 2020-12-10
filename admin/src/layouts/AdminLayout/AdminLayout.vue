@@ -60,7 +60,7 @@ export default {
                     ]
                 },
                 {
-                    text: "Interface",
+                    text: "",
                     items: [
                         {
                             text: "Components",
@@ -68,7 +68,7 @@ export default {
                             collapsed: true,
                             items: [
                                 {
-                                    text: "Custom Components",
+                                    text: "",
                                     items: [
                                         {
                                             text: 'Buttons'
@@ -86,7 +86,7 @@ export default {
                             collapsed: true,
                             items: [
                                 {
-                                    text: "Custom Utilities",
+                                    text: "",
                                     items: [
                                         {
                                             text: 'Colors'
@@ -107,7 +107,7 @@ export default {
                     ]
                 },
                 {
-                    text: "Addons",
+                    text: "",
                     items: [
                         {
                             text: "Pages",
@@ -115,7 +115,7 @@ export default {
                             collapsed: true,
                             items: [
                                 {
-                                    text: "Login Screens",
+                                    text: "",
                                     items: [
                                         {
                                             text: "Login"
@@ -129,7 +129,7 @@ export default {
                                     ]
                                 },
                                 {
-                                    text: "Other Pages",
+                                    text: "",
                                     items: [
                                         {
                                             text: "404 Page"
@@ -176,14 +176,15 @@ export default {
             const menu = JSON.parse(JSON.stringify(this.sideBarMenuItems));
             Object.values(menu).forEach((item, itemIndex) => {
                 Object.values(item.items).forEach((subItem0, subItem0Index) => {
-                    if (this.sideBarMenuItems[itemIndex].items[subItem0Index].text !== path || !this.sideBarMenuItems[itemIndex].items[subItem0Index].items) {
-                        this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = false;
-                        this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = true;
+                    if (this.sideBarMenuItems[itemIndex].items[subItem0Index].text !== path || !this.sideBarMenuItems[itemIndex].items[subItem0Index].items && !this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed) {
+                        setTimeout(() => {
+                            this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = true;
+                            this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = false;
+                        }, 60);
                         return;
                     }
 
                     this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = true;
-
                     setTimeout(() => {
                         this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed = !this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsed;
                         this.sideBarMenuItems[itemIndex].items[subItem0Index].collapsing = false;
