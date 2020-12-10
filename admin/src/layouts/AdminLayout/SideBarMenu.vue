@@ -21,7 +21,7 @@
                 </div>
             </li>
 
-            <hr class="sidebar-divider">
+            <hr :style="{'margin': '0px'}" class="sidebar-divider">
         </div>
     </div>
 </template>
